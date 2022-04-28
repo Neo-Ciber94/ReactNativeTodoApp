@@ -1,6 +1,17 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "allowJs": false,
+    "alwaysStrict": true,
+    "noImplicitAny": false,
+    "incremental": true,
+    "strictNullChecks": true,
+    "noImplicitThis": false,
+    "noImplicitOverride": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false,
+    "noStrictGenericChecks": false,
+    "noPropertyAccessFromIndexSignature": false
   }
 }
