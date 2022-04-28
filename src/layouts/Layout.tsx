@@ -14,6 +14,7 @@ const Layout: FC = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    height: "90%",
   },
 });
 
