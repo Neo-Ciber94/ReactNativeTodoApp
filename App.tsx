@@ -1,14 +1,10 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useReducer } from "react";
+import React from "react";
 import { DefaultTheme as PaperDefaultTheme } from "react-native-paper";
-import { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
 import { Theme } from "react-native-paper/lib/typescript/types";
-import AddTodoButton from "./src/components/AddTodoButton";
-import TodoList from "./src/components/TodoList";
+import { TodoContextProvider } from "./src/contexts/TodoContext";
 import Layout from "./src/layouts/Layout";
-import { useTodoReducer } from "./src/redux/todos.redux";
+import Main from "./src/layouts/Main";
 
 const theme: Theme = {
   ...PaperDefaultTheme,
@@ -29,14 +25,13 @@ const theme: Theme = {
 };
 
 export default function App() {
-  const [todoState, dispatch] = useTodoReducer();
-
   return (
-    <PaperProvider theme={theme}>
-      <Layout>
-        <TodoList todos={todoState.todos} />
-        <AddTodoButton onPress={() => console.log("Add")} />
-      </Layout>
-    </PaperProvider>
+    <TodoContextProvider>
+      <PaperProvider theme={theme}>
+        <Layout>
+          <Main />
+        </Layout>
+      </PaperProvider>
+    </TodoContextProvider>
   );
 }

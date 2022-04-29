@@ -1,27 +1,44 @@
 import { StyleSheet, View, Text } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Checkbox } from "react-native-paper";
 import { Todo } from "../../model/Todo";
 
 export interface TodoItemProps {
   todo: Todo;
+  onToggle: (todo: Todo) => void;
   onEdit: (todo: Todo) => void;
   onDelete: (todo: Todo) => void;
 }
 
-export default function TodoItem({ todo, onEdit, onDelete }: TodoItemProps) {
+export default function TodoItem({
+  todo,
+  onToggle,
+  onEdit,
+  onDelete,
+}: TodoItemProps) {
   return (
     <View style={styles.card}>
-      <Text>{todo.title}</Text>
+      <View style={styles.todoLead}>
+        <View style={{ marginRight: 10 }}>
+          <Checkbox
+            onPress={() => onToggle(todo)}
+            status={todo.completed === true ? "checked" : "unchecked"}
+          />
+        </View>
+        <Text style={todo.completed === true ? styles.textDashed : styles.text}>
+          {todo.title}
+        </Text>
+      </View>
+
       <View style={styles.actions}>
         <Button
-          style={styles.button}
           icon="lead-pencil"
-          onPress={onEdit}
+          labelStyle={styles.icon}
+          onPress={() => onEdit(todo)}
         ></Button>
         <Button
-          style={styles.button}
           icon="trash-can"
-          onPress={onDelete}
+          labelStyle={styles.icon}
+          onPress={() => onDelete(todo)}
         ></Button>
       </View>
     </View>
@@ -31,9 +48,7 @@ export default function TodoItem({ todo, onEdit, onDelete }: TodoItemProps) {
 const styles = StyleSheet.create({
   card: {
     display: "flex",
-    flexGrow: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderRadius: 10,
@@ -42,10 +57,34 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
   },
-  actions: {
+  todoLead: {
+    marginRight: "auto",
     display: "flex",
     flexDirection: "row",
   },
-  button: {
+  actions: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  icon: {
+    fontSize: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center",
+  },
+  button: {},
+  textDashed: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    textDecorationLine: "line-through",
+    opacity: 0.4,
+  },
+  text: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

@@ -1,12 +1,7 @@
-import { useEffect, useReducer } from "react";
-import { todosMocks } from "../mocks/todos.mocks";
+import { configureStore } from "@reduxjs/toolkit";
+import { nanoid } from "nanoid";
 import { Todo } from "../model/Todo";
-
-const INITIAL_TODOS = [...todosMocks];
-
-const INITIAL_STATE: TodoState = {
-  todos: [],
-};
+import { TodoCreate } from "../model/TodoCreate";
 
 export interface TodoState {
   todos: Todo[];
@@ -14,12 +9,12 @@ export interface TodoState {
 
 export interface AddTodo {
   type: "todos/add";
-  payload: { data: Todo };
+  payload: { data: TodoCreate };
 }
 
-export interface EditTodo {
-  type: "todos/edit";
-  payload: { id: string };
+export interface UpdateTodo {
+  type: "todos/update";
+  payload: { data: Todo };
 }
 
 export interface DeleteTodo {
@@ -34,11 +29,12 @@ export interface ToggleTodo {
 
 export interface InitializeTodos {
   type: "todos/initialize";
+  payload: { data: Todo[] };
 }
 
 export type TodoActions =
   | AddTodo
-  | EditTodo
+  | UpdateTodo
   | DeleteTodo
   | ToggleTodo
   | InitializeTodos;
@@ -51,15 +47,20 @@ export function todosReducer(
     case "todos/add":
       return {
         ...state,
-        todos: [...state.todos, action.payload.data],
+        todos: [
+          ...state.todos,
+          {
+            ...action.payload.data,
+            id: nanoid(),
+            completed: false,
+          },
+        ],
       };
-    case "todos/edit":
+    case "todos/update":
       return {
         ...state,
         todos: state.todos.map((todo) =>
-          todo.id === action.payload.id
-            ? { ...todo, completed: !todo.completed }
-            : todo
+          todo.id === action.payload.data?.id ? action.payload.data : todo
         ),
       };
     case "todos/delete":
@@ -79,20 +80,18 @@ export function todosReducer(
     case "todos/initialize":
       return {
         ...state,
-        todos: [...INITIAL_TODOS],
+        todos: [...action.payload.data],
       };
     default:
       return state;
   }
 }
 
-export function useTodoReducer() {
-  const result = useReducer(todosReducer, INITIAL_STATE);
-  const [_, dispatch] = result;
+export const todoStore = configureStore({
+  reducer: todosReducer,
+  devTools: process.env.NODE_ENV !== "production",
+});
 
-  useEffect(() => {
-    dispatch({ type: "todos/initialize" });
-  }, []);
-
-  return result;
-}
+todoStore.subscribe(() => {
+  console.log(todoStore.getState());
+});
