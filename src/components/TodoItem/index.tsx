@@ -24,7 +24,7 @@ export default function TodoItem({
             status={todo.completed === true ? "checked" : "unchecked"}
           />
         </View>
-        <Text style={todo.completed === true ? styles.textDashed : styles.text}>
+        <Text style={[styles.text, todo.completed ? styles.textDashed : {}]}>
           {todo.title}
         </Text>
       </View>
@@ -76,9 +76,6 @@ const styles = StyleSheet.create({
   },
   button: {},
   textDashed: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
     textDecorationLine: "line-through",
     opacity: 0.4,
   },
