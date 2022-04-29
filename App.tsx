@@ -5,29 +5,12 @@ import { Theme } from "react-native-paper/lib/typescript/types";
 import { TodoContextProvider } from "./src/contexts/TodoContext";
 import Layout from "./src/layouts/Layout";
 import Main from "./src/layouts/Main";
-
-const theme: Theme = {
-  ...PaperDefaultTheme,
-  fonts: {
-    light: {
-      fontFamily: "monospace",
-    },
-    medium: {
-      fontFamily: "monospace",
-    },
-    regular: {
-      fontFamily: "monospace",
-    },
-    thin: {
-      fontFamily: "monospace",
-    },
-  },
-};
+import { appTheme } from "./src/themes/defaultTheme";
 
 export default function App() {
   return (
     <TodoContextProvider>
-      <PaperProvider theme={theme}>
+      <PaperProvider theme={appTheme}>
         <Layout>
           <Main />
         </Layout>

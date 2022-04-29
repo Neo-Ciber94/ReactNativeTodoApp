@@ -24,7 +24,7 @@ export default function ConfirmDeleteDialog({
         <Dialog.Title>Do you want to delete this Todo?</Dialog.Title>
         <Dialog.Content>
           <Paragraph>
-            Delete todo <strong>{todo?.title}</strong>
+            Delete "<strong>{todo?.title}"?</strong>
           </Paragraph>
         </Dialog.Content>
         <Dialog.Actions>
