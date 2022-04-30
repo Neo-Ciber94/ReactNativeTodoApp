@@ -1,28 +1,25 @@
 import { useNavigation } from "@react-navigation/native";
-import type { CompositeNavigationProp } from "@react-navigation/native";
-import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import type { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState } from "react";
-import { View, StyleSheet, useWindowDimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  useWindowDimensions,
+  ScrollView,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Todo } from "../../model/Todo";
 import { deleteTodo, selectTodos, toggleTodo } from "../../redux/todos.slice";
 import routes from "../../routes";
-import { RootStackParamList } from "../../routes/navigator";
 import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 import TodoItem from "../TodoItem";
-
-type NavProps = CompositeNavigationProp<
-  BottomTabNavigationProp<RootStackParamList, "Edit">,
-  StackNavigationProp<RootStackParamList>
->;
+import { NavigationType } from "../../types";
+import { Headline } from "react-native-paper";
 
 export default function TodoList() {
   const todos = useSelector(selectTodos);
   const layout = useWindowDimensions();
   const dispatch = useDispatch();
-  const navigation = useNavigation<NavProps>();
-  console.log(navigation);
+  const navigation = useNavigation<NavigationType<"Edit">>();
   const isLargeScreen = layout.width > 1200;
 
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -41,7 +38,6 @@ export default function TodoList() {
   const showDeleteDialog = (t: Todo) => {
     setDialogVisible(true);
     setSelectedTodo(t);
-    console.log("Delete: ", t);
   };
 
   const confirmDelete = () => {
@@ -55,17 +51,19 @@ export default function TodoList() {
 
   return (
     <>
-      <View style={styles.list}>
+      <ScrollView style={styles.list}>
+        <Headline>My todos</Headline>
         {todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onToggle={handleTodoToggle}
-            onDelete={showDeleteDialog}
-            onEdit={handleEdit}
-          />
+          <View key={todo.id} style={styles.item}>
+            <TodoItem
+              todo={todo}
+              onToggle={handleTodoToggle}
+              onDelete={showDeleteDialog}
+              onEdit={handleEdit}
+            />
+          </View>
         ))}
-      </View>
+      </ScrollView>
       <ConfirmDeleteDialog
         todo={selectedTodo}
         visible={dialogVisible}
@@ -78,10 +76,12 @@ export default function TodoList() {
 
 const styles = StyleSheet.create({
   list: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-    padding: 5,
+    paddingHorizontal: 20,
+    paddingTop: 5,
+    paddingBottom: 80,
     width: "100%",
+  },
+  item: {
+    marginVertical: 7,
   },
 });

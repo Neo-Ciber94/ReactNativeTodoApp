@@ -6,5 +6,5 @@ type Props = NativeStackScreenProps<RootStackParamList, "Edit">;
 
 export default function EditTodo({ route }: Props) {
   const { todo } = route.params;
-  return <TodoEditor todo={todo} />;
+  return <TodoEditor title={"Edit todo"} todo={todo} />;
 }

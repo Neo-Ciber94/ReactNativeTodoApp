@@ -20,23 +20,26 @@ const todoSlice = createSlice({
         id: nanoid(),
         title: action.payload.title,
         completed: false,
+        version: 1,
+        createdAt: new Date(),
       };
       state.todos.push(todo);
     },
     toggleTodo: (state, action: PayloadAction<{ id: string }>) => {
-      const todo = state.todos.find((t) => t.id === action.payload.id);
-      if (todo) {
-        todo.completed = !todo.completed;
-      }
+      updateTodoInternal(state, action.payload.id, (t) => ({
+        completed: !t.completed,
+      }));
     },
     deleteTodo: (state, action: PayloadAction<{ id: string }>) => {
       state.todos = state.todos.filter((t) => t.id !== action.payload.id);
     },
-    editTodo: (state, action: PayloadAction<{ id: string; title: string }>) => {
-      const todo = state.todos.find((t) => t.id === action.payload.id);
-      if (todo) {
-        todo.title = action.payload.title;
-      }
+    updateTodo: (
+      state,
+      action: PayloadAction<{ id: string; title: string }>
+    ) => {
+      updateTodoInternal(state, action.payload.id, (t) => ({
+        title: action.payload.title,
+      }));
     },
     initTodos: (state, action: PayloadAction<{ todos: Todo[] }>) => {
       state.todos = action.payload.todos;
@@ -44,7 +47,32 @@ const todoSlice = createSlice({
   },
 });
 
+function updateTodoInternal(
+  state: TodoState,
+  id: string,
+  update: (todo: Todo) => Omit<Partial<Todo>, "id">
+) {
+  const todoToUpdate = state.todos.find((t) => t.id === id);
+
+  if (todoToUpdate) {
+    const props = update(todoToUpdate);
+    const ignoreKeys: (keyof Todo)[] = ["id", "version", "createdAt"];
+    const keys = Object.keys(todoToUpdate).filter((k) =>
+      ignoreKeys.includes(k as keyof Todo)
+    ) as (keyof Todo)[];
+
+    for (const k in keys) {
+      if (k in todoToUpdate) {
+        todoToUpdate[k] = props[k];
+      }
+    }
+
+    todoToUpdate.version += 1;
+    todoToUpdate.updatedAt = new Date();
+  }
+}
+
 export const todoReducer = todoSlice.reducer;
 export const selectTodos = (state: RootState) => state.todoState.todos;
-export const { createTodo, deleteTodo, editTodo, toggleTodo, initTodos } =
+export const { createTodo, deleteTodo, updateTodo, toggleTodo, initTodos } =
   todoSlice.actions;

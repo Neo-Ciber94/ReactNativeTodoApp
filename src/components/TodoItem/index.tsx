@@ -1,12 +1,10 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Checkbox, IconButton, withTheme } from "react-native-paper";
-import { Theme } from "react-native-paper/lib/typescript/types";
+import { Checkbox, IconButton, useTheme, withTheme } from "react-native-paper";
 import { Todo } from "../../model/Todo";
 
 export interface TodoItemProps {
   todo: Todo;
-  theme: Theme;
   onToggle: (todo: Todo) => void;
   onEdit: (todo: Todo) => void;
   onDelete: (todo: Todo) => void;
@@ -17,9 +15,8 @@ const TodoItem: React.FC<TodoItemProps> = ({
   onToggle,
   onEdit,
   onDelete,
-  theme,
 }) => {
-  const { colors } = theme;
+  const { colors } = useTheme();
 
   return (
     <View style={[styles.card, { backgroundColor: colors.surface }]}>
@@ -92,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTheme(TodoItem);
+export default TodoItem;

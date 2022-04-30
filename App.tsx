@@ -11,6 +11,7 @@ import routes from "./src/routes";
 import AddTodo from "./src/pages/AddTodo";
 import EditTodo from "./src/pages/EditTodo";
 import Header from "./src/layouts/Header";
+import { StyleSheet } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +25,8 @@ export default function App() {
               initialRouteName={routes.list}
               screenOptions={{
                 header: (props) => <Header {...props} />,
-                contentStyle: { padding: 10, height: "90%" },
+                animation: "slide_from_bottom",
+                contentStyle: styles.container,
               }}
             >
               <Stack.Screen name={routes.list} component={Main} />
@@ -37,3 +39,10 @@ export default function App() {
     </Provider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+    height: "90%",
+  },
+});

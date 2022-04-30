@@ -13,10 +13,21 @@ import { RootStackParamList } from "../routes/navigator";
 import { LocalStore } from "../utils/persistence/LocalPersistence";
 
 const store = new LocalStore<TodoState>("todos/data");
-
 type Props = NativeStackScreenProps<RootStackParamList, "List">;
 
 export default function Main({ navigation }: Props) {
+  // Initialize the todo store
+  useTodosStorage();
+
+  return (
+    <View style={{ height: "100%" }}>
+      <TodoList />
+      <AddTodoButton onPress={() => navigation.navigate(routes.add)} />
+    </View>
+  );
+}
+
+function useTodosStorage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,11 +52,4 @@ export default function Main({ navigation }: Props) {
 
     return () => unsuscribe();
   }, []);
-
-  return (
-    <View style={{ height: "100%" }}>
-      <TodoList />
-      <AddTodoButton onPress={() => navigation.navigate(routes.add)} />
-    </View>
-  );
 }
