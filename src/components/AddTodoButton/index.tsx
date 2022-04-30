@@ -1,30 +1,21 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { Drawer, FAB } from "react-native-paper";
+import { FAB } from "react-native-paper";
 
 export interface AddTodoButtonProps {
   onPress: () => void;
 }
 
 export default function AddTodoButton({ onPress }: AddTodoButtonProps) {
-  const [active, setActive] = React.useState("");
+  const [active, setActive] = React.useState(false);
+
+  function handleOnPress() {
+    onPress();
+    setActive(!active);
+  }
 
   return (
-    <>
-      <FAB style={styles.fab} icon="plus" color="white" onPress={onPress} />
-      <Drawer.Section title="Some title">
-        <Drawer.Item
-          label="First Item"
-          active={active === "first"}
-          onPress={() => setActive("first")}
-        />
-        <Drawer.Item
-          label="Second Item"
-          active={active === "second"}
-          onPress={() => setActive("second")}
-        />
-      </Drawer.Section>
-    </>
+    <FAB style={styles.fab} icon="plus" color="white" onPress={handleOnPress} />
   );
 }
 

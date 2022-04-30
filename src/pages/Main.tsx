@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import { useDispatch } from "react-redux";
@@ -6,11 +8,15 @@ import TodoList from "../components/TodoList";
 import { todosMocks } from "../mocks/todos.mocks";
 import { initTodos, TodoState } from "../redux/todos.slice";
 import { todoStore } from "../redux/todos.store";
+import routes from "../routes";
+import { RootStackParamList } from "../routes/navigator";
 import { LocalStore } from "../utils/persistence/LocalPersistence";
 
 const store = new LocalStore<TodoState>("todos/data");
 
-export default function Main() {
+type Props = NativeStackScreenProps<RootStackParamList, "List">;
+
+export default function Main({ navigation }: Props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,7 +45,7 @@ export default function Main() {
   return (
     <View style={{ height: "100%" }}>
       <TodoList />
-      <AddTodoButton onPress={() => console.log("Add")} />
+      <AddTodoButton onPress={() => navigation.navigate(routes.add)} />
     </View>
   );
 }
