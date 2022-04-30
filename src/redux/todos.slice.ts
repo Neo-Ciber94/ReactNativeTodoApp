@@ -47,6 +47,9 @@ const todoSlice = createSlice({
         todo.updatedAt = new Date();
       }
     },
+    setTodo: (state, action: PayloadAction<{ todo: Todo }>) => {
+      state.todos.push(action.payload.todo);
+    },
     initTodos: (state, action: PayloadAction<{ todos: Todo[] }>) => {
       state.todos = action.payload.todos;
     },
@@ -64,5 +67,11 @@ export const selectTodoSorted = (state: RootState) => {
   });
   return todos;
 };
-export const { createTodo, deleteTodo, updateTodo, toggleTodo, initTodos } =
-  todoSlice.actions;
+export const {
+  createTodo,
+  deleteTodo,
+  updateTodo,
+  setTodo,
+  toggleTodo,
+  initTodos,
+} = todoSlice.actions;

@@ -1,5 +1,5 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -15,18 +15,25 @@ import TodoItem from "../TodoItem";
 import { NavigationType } from "../../types";
 import { Caption, Headline, Searchbar } from "react-native-paper";
 import { useTodos } from "../../hooks/useTodos";
+import AfterDeleteSnackBar from "../AfterDeleteSnackbar";
 
 export default function TodoList() {
   const todos = useTodos();
   const layout = useWindowDimensions();
   const dispatch = useDispatch();
-  const navigation = useNavigation<NavigationType<"Edit">>();
+  const navigation = useNavigation<NavigationType>();
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [searchText, setSearchText] = useState("");
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>(todos);
+  const deletedRef = useRef<Todo | undefined>(undefined);
+  const [afterDeleteSnackbar, setAfterDeleteSnackbar] = useState(false);
   const isSearching = searchText.trim().length > 0;
   let padding = styles.px;
+
+  useEffect(() => {
+    setAfterDeleteSnackbar(true);
+  }, []);
 
   useEffect(() => {
     if (isSearching) {
@@ -63,7 +70,9 @@ export default function TodoList() {
 
   const confirmDelete = () => {
     if (selectedTodo) {
+      deletedRef.current = selectedTodo;
       dispatch(deleteTodo({ id: selectedTodo.id }));
+      setAfterDeleteSnackbar(true);
     }
 
     setDialogVisible(false);
@@ -104,6 +113,12 @@ export default function TodoList() {
         visible={dialogVisible}
         setVisible={setDialogVisible}
         onConfirm={confirmDelete}
+      />
+      <AfterDeleteSnackBar
+        durationMs={2000}
+        visible={afterDeleteSnackbar}
+        setVisible={setAfterDeleteSnackbar}
+        deletedTodoRef={deletedRef}
       />
     </>
   );

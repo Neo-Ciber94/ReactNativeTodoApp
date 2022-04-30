@@ -1,13 +1,15 @@
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Text, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import {
+  Text,
   Button,
   Chip,
   Headline,
   HelperText,
   Switch,
   TextInput,
+  Avatar,
 } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { Todo } from "../../model/Todo";
@@ -56,7 +58,16 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
       <View style={styles.heading}>
         <Headline>{title}</Headline>
         {todo && (
-          <Chip icon="check" style={{ backgroundColor: colors.accent }}>
+          <Chip
+            textStyle={{ color: "black" }}
+            style={{ backgroundColor: colors.accent }}
+          >
+            <Avatar.Icon
+              icon="check-bold"
+              style={styles.completedIcon}
+              color='black'
+              size={25}
+            />
             Completed
           </Chip>
         )}
@@ -146,5 +157,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     gap: 10,
+  },
+  completedIcon: {
+    backgroundColor: "#0000",
   },
 });

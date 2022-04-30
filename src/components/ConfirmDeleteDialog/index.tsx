@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 import { Portal, Dialog, Button, Paragraph } from "react-native-paper";
 import { Todo } from "../../model/Todo";
 
@@ -20,7 +21,11 @@ export default function ConfirmDeleteDialog({
 
   return (
     <Portal>
-      <Dialog visible={visible} onDismiss={handleHideDialog}>
+      <Dialog
+        style={styles.dialog}
+        visible={visible}
+        onDismiss={handleHideDialog}
+      >
         <Dialog.Title>Do you want to delete this Todo?</Dialog.Title>
         <Dialog.Content>
           <Paragraph>
@@ -35,3 +40,10 @@ export default function ConfirmDeleteDialog({
     </Portal>
   );
 }
+
+const styles = StyleSheet.create({
+  dialog: {
+    width: "80%",
+    marginHorizontal: "auto",
+  },
+});
