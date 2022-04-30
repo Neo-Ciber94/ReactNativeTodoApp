@@ -51,3 +51,5 @@ function isUserPreferenceDarkMode(colorSchemeName: ColorSchemeName): boolean {
 }
 
 export const useDarkTheme = () => useContext(DarkThemeContext);
+
+export const useIsDarkTheme = () => useContext(DarkThemeContext).dark;

@@ -16,6 +16,13 @@ import { NavigationType } from "../../types";
 import { Caption, Headline, Searchbar } from "react-native-paper";
 import { useTodos } from "../../hooks/useTodos";
 import AfterDeleteSnackBar from "../AfterDeleteSnackbar";
+import ButtonGroup, { createButtonGroupItem } from "../ButtonGroup";
+
+enum TodoFilter {
+  ALL = "ALL",
+  COMPLETED = "COMPLETED",
+  ACTIVE = "ACTIVE",
+}
 
 export default function TodoList() {
   const todos = useTodos();
@@ -28,12 +35,9 @@ export default function TodoList() {
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>(todos);
   const deletedRef = useRef<Todo | undefined>(undefined);
   const [afterDeleteSnackbar, setAfterDeleteSnackbar] = useState(false);
+  const [filter, setFilter] = useState<TodoFilter>(TodoFilter.ALL);
   const isSearching = searchText.trim().length > 0;
   let padding = styles.px;
-
-  useEffect(() => {
-    setAfterDeleteSnackbar(true);
-  }, []);
 
   useEffect(() => {
     if (isSearching) {
@@ -82,6 +86,29 @@ export default function TodoList() {
   return (
     <>
       <View style={[styles.search, padding]}>
+        <View style={{ marginBottom: 10 }}>
+          <ButtonGroup
+            value={filter}
+            onChange={setFilter}
+            items={[
+              createButtonGroupItem(
+                TodoFilter.ALL,
+                TodoFilter.ALL,
+                "filter-variant"
+              ),
+              createButtonGroupItem(
+                TodoFilter.COMPLETED,
+                TodoFilter.COMPLETED,
+                "check-bold"
+              ),
+              createButtonGroupItem(
+                TodoFilter.ACTIVE,
+                TodoFilter.ACTIVE,
+                "checkbox-blank-circle-outline"
+              ),
+            ]}
+          />
+        </View>
         <Searchbar
           placeholder="Search"
           onChangeText={setSearchText}
