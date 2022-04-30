@@ -28,7 +28,7 @@ export interface TodoEditorProps {
 
 export default function TodoEditor({ title, todo }: TodoEditorProps) {
   const { colors } = useTheme();
-  const navigation = useNavigation<NavigationType<"List">>();
+  const navigation = useNavigation<NavigationType>();
   const [showDetails, setShowDetails] = React.useState(false);
   const form = useForm<TodoInput>({
     defaultValues: { title: todo?.title || "" },

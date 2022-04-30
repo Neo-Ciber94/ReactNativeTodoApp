@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { View } from "react-native";
-import { useTheme, withTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 const Layout: FC = ({ children }) => {
   const { colors } = useTheme();
@@ -17,4 +17,4 @@ const Layout: FC = ({ children }) => {
   );
 };
 
-export default withTheme(Layout);
+export default Layout;

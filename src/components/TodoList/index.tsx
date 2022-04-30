@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
   list: {
     paddingTop: 5,
     paddingBottom: 80,
+    backgroundColor: "transparent",
   },
   item: {
     marginVertical: 7,

@@ -1,5 +1,7 @@
+import routes from ".";
+
 export type RootStackParamList = {
-  List: {};
-  Add: {};
-  Edit: { todoId: string };
+  [routes.list]: {};
+  [routes.add]: {};
+  [routes.edit]: { todoId: string };
 };

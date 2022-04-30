@@ -16,10 +16,12 @@ const TodoItem: React.FC<TodoItemProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const { colors } = useTheme();
+  const { colors, dark } = useTheme();
 
   return (
-    <View style={[styles.card, { backgroundColor: colors.surface }]}>
+    <View
+      style={[styles.card, { backgroundColor: dark ? "#1f1f1f" : "" }]}
+    >
       <View style={styles.todoLead}>
         <View style={{ marginRight: 10 }}>
           <Checkbox

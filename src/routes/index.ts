@@ -1,7 +1,7 @@
 const routes = {
-  list: "List",
-  add: "Add",
-  edit: "Edit",
+  list: "Todos - List",
+  add: "Todos - Add",
+  edit: "Todos - Edit",
 } as const;
 
 export default routes;

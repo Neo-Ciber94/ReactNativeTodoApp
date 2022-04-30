@@ -1,75 +1,44 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect } from "react";
-import { View } from "react-native";
-import { useDispatch } from "react-redux";
-import AddTodoButton from "../components/AddTodoButton";
-import TodoList from "../components/TodoList";
-import todosMocks from "../mocks/todos.mocks";
-import { Todo } from "../model/Todo";
-import { initTodos, TodoState } from "../redux/todos.slice";
-import { todoStore } from "../redux/todos.store";
+import { Provider as PaperProvider } from "react-native-paper";
+import { NavigationContainer, Theme } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
+import { StyleSheet } from "react-native";
+import { useDarkTheme } from "../contexts/DarkThemeContext";
+import Header from "../layouts/Header";
 import routes from "../routes";
-import { RootStackParamList } from "../routes/navigator";
-import { LocalStore } from "../utils/persistence/LocalPersistence";
+import AddTodo from "./AddTodo";
+import EditTodo from "./EditTodo";
+import ListTodos from "./ListTodos";
 
-const store = new LocalStore<TodoState>("todos/data");
-type Props = NativeStackScreenProps<RootStackParamList, "List">;
+const Stack = createNativeStackNavigator();
 
-export default function Main({ navigation }: Props) {
-  // Initialize the todo store
-  useTodosStorage();
+export default function Main() {
+  // react-native-paper and react-navigation theme types as semi-compatibles
+  const { theme } = useDarkTheme();
 
   return (
-    <View style={{ height: "100%" }}>
-      <TodoList />
-      <AddTodoButton onPress={() => navigation.navigate(routes.add, {})} />
-    </View>
+    <PaperProvider theme={theme}>
+      <NavigationContainer theme={theme as unknown as Theme}>
+        <Stack.Navigator
+          initialRouteName={routes.list}
+          screenOptions={{
+            header: (props) => <Header {...props} />,
+            animation: "slide_from_bottom",
+            contentStyle: styles.container,
+          }}
+        >
+          <Stack.Screen name={routes.list} component={ListTodos} />
+          <Stack.Screen name={routes.add} component={AddTodo} />
+          <Stack.Screen name={routes.edit} component={EditTodo} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 
-function useTodosStorage() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const initialize = async () => {
-      const data = await store.load(todoStateReviver);
-
-      if (data) {
-        dispatch(initTodos({ todos: data.todos }));
-      } else if (__DEV__) {
-        dispatch(initTodos({ todos: todosMocks }));
-      }
-    };
-
-    initialize();
-  }, []);
-
-  useEffect(() => {
-    const unsuscribe = todoStore.subscribe(async () => {
-      const appState = todoStore.getState();
-      await store.save(appState.todoState);
-    });
-
-    return () => unsuscribe();
-  }, []);
-}
-
-function todoStateReviver(key: keyof TodoState, value: unknown): unknown {
-  if (key == "todos" && Array.isArray(value)) {
-    const todos: Partial<Todo>[] = value || [];
-
-    for (const todo of todos) {
-      if (todo) {
-        if (todo.createdAt) {
-          todo.createdAt = new Date(todo.createdAt);
-        }
-
-        if (todo.updatedAt) {
-          todo.updatedAt = new Date(todo.updatedAt);
-        }
-      }
-    }
-  }
-
-  return value;
-}
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+    height: "90%",
+  },
+});

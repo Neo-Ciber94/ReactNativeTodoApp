@@ -1,8 +1,5 @@
 import { Theme } from "react-native-paper/lib/typescript/types";
-import {
-  configureFonts,
-  DefaultTheme as PaperDefaultTheme,
-} from "react-native-paper";
+import { configureFonts, DarkTheme, DefaultTheme } from "react-native-paper";
 
 const fontConfig = {
   web: {
@@ -63,7 +60,10 @@ const fontConfig = {
   },
 };
 
-export const appTheme: Theme = {
-  ...PaperDefaultTheme,
-  fonts: configureFonts(fontConfig),
-};
+export function getAppTheme(isDark: boolean): Theme {
+  const mainTheme = isDark ? DarkTheme : DefaultTheme;
+  return {
+    ...mainTheme,
+    fonts: configureFonts(fontConfig),
+  };
+}
