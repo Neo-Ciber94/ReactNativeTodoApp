@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 import { Todo } from "../model/Todo";
+import { RootState } from "./todos.store";
 
 export interface TodoState {
   todos: Todo[];
@@ -37,10 +38,13 @@ const todoSlice = createSlice({
         todo.title = action.payload.title;
       }
     },
+    initTodos: (state, action: PayloadAction<{ todos: Todo[] }>) => {
+      state.todos = action.payload.todos;
+    },
   },
 });
 
 export const todoReducer = todoSlice.reducer;
-export const selectTodos = (state: TodoState) => state.todos;
-export const { createTodo, deleteTodo, editTodo, toggleTodo } =
+export const selectTodos = (state: RootState) => state.todoState.todos;
+export const { createTodo, deleteTodo, editTodo, toggleTodo, initTodos } =
   todoSlice.actions;

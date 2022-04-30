@@ -4,7 +4,7 @@ import { Appbar } from "react-native-paper";
 export default function Header() {
   return (
     <Appbar.Header>
-      <Appbar.Content title="Todo - App" />
+      <Appbar.Content title="Todos App" />
     </Appbar.Header>
   );
 }

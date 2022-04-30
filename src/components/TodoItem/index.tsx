@@ -1,22 +1,28 @@
+import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Button, Checkbox } from "react-native-paper";
+import { Checkbox, IconButton, withTheme } from "react-native-paper";
+import { Theme } from "react-native-paper/lib/typescript/types";
 import { Todo } from "../../model/Todo";
 
 export interface TodoItemProps {
   todo: Todo;
+  theme: Theme;
   onToggle: (todo: Todo) => void;
   onEdit: (todo: Todo) => void;
   onDelete: (todo: Todo) => void;
 }
 
-export default function TodoItem({
+const TodoItem: React.FC<TodoItemProps> = ({
   todo,
   onToggle,
   onEdit,
   onDelete,
-}: TodoItemProps) {
+  theme,
+}) => {
+  const { colors } = theme;
+
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, { backgroundColor: colors.surface }]}>
       <View style={styles.todoLead}>
         <View style={{ marginRight: 10 }}>
           <Checkbox
@@ -24,26 +30,34 @@ export default function TodoItem({
             status={todo.completed === true ? "checked" : "unchecked"}
           />
         </View>
-        <Text style={[styles.text, todo.completed ? styles.textDashed : {}]}>
+        <Text
+          style={[
+            { color: colors.text },
+            styles.text,
+            todo.completed ? styles.textDashed : {},
+          ]}
+        >
           {todo.title}
         </Text>
       </View>
 
       <View style={styles.actions}>
-        <Button
+        <IconButton
           icon="lead-pencil"
-          labelStyle={styles.icon}
+          size={20}
+          color={colors.primary}
           onPress={() => onEdit(todo)}
-        ></Button>
-        <Button
+        />
+        <IconButton
           icon="trash-can"
-          labelStyle={styles.icon}
+          size={20}
+          color={colors.primary}
           onPress={() => onDelete(todo)}
-        ></Button>
+        />
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -67,14 +81,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  icon: {
-    fontSize: 20,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
-  },
-  button: {},
   textDashed: {
     textDecorationLine: "line-through",
     opacity: 0.4,
@@ -85,3 +91,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+export default withTheme(TodoItem);

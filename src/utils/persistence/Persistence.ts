@@ -1,6 +1,6 @@
 import { Reviver } from "../parseJson";
 
-export interface Persistence<T> {
+export interface Store<T> {
   load(reviver?: Reviver<T>): Promise<T | null>;
   save(data: T): Promise<void>;
 }

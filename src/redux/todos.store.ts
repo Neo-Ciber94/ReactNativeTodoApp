@@ -3,8 +3,14 @@ import { todoReducer } from "./todos.slice";
 
 export const todoStore = configureStore({
   reducer: {
-    todos: todoReducer,
+    todoState: todoReducer,
   },
+  middleware: [
+    (store) => (next) => (action) => {
+      console.log("middleware: ", action);
+      next(action);
+    },
+  ],
 });
 
 export type RootState = ReturnType<typeof todoStore.getState>;

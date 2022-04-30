@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { View, StyleSheet, useWindowDimensions } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { Todo } from "../../model/Todo";
-import { useAppSelector } from "../../redux/todos.hooks";
 import { deleteTodo, selectTodos, toggleTodo } from "../../redux/todos.slice";
 import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 import TodoItem from "../TodoItem";
 
 export default function TodoList() {
-  const todoState = useAppSelector((state) => state.todos);
-  const todos = selectTodos(todoState);
+  const todos = useSelector(selectTodos);
   const layout = useWindowDimensions();
+  const dispatch = useDispatch();
   const isLargeScreen = layout.width > 1200;
 
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -20,7 +20,7 @@ export default function TodoList() {
   };
 
   const handleTodoToggle = (t: Todo) => {
-    toggleTodo({ id: t.id });
+    dispatch(toggleTodo({ id: t.id }));
   };
 
   const showDeleteDialog = (t: Todo) => {
@@ -31,7 +31,7 @@ export default function TodoList() {
 
   const confirmDelete = () => {
     if (selectedTodo) {
-      deleteTodo({ id: selectedTodo.id });
+      dispatch(deleteTodo({ id: selectedTodo.id }));
     }
 
     setDialogVisible(false);

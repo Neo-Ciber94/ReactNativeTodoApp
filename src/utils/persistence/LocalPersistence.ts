@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { parseJson, Reviver } from "../parseJson";
-import { Persistence } from "./persistence";
+import { Store } from "./persistence";
 
-export class LocalPersistence<T> implements Persistence<T> {
+export class LocalStore<T> implements Store<T> {
   constructor(public readonly key: string) {}
 
   async load(reviver?: Reviver<T>): Promise<T | null> {
