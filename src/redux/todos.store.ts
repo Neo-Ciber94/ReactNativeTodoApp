@@ -5,12 +5,7 @@ export const todoStore = configureStore({
   reducer: {
     todoState: todoReducer,
   },
-  middleware: [
-    (store) => (next) => (action) => {
-      console.log("middleware: ", action);
-      next(action);
-    },
-  ],
+  middleware: [],
 });
 
 export type RootState = ReturnType<typeof todoStore.getState>;

@@ -6,17 +6,18 @@ import {
   useWindowDimensions,
   ScrollView,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Todo } from "../../model/Todo";
-import { deleteTodo, selectTodos, selectTodoSorted, toggleTodo } from "../../redux/todos.slice";
+import { deleteTodo, toggleTodo } from "../../redux/todos.slice";
 import routes from "../../routes";
 import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 import TodoItem from "../TodoItem";
 import { NavigationType } from "../../types";
 import { Caption, Headline, Searchbar } from "react-native-paper";
+import { useTodos } from "../../hooks/useTodos";
 
 export default function TodoList() {
-  const todos = useSelector(selectTodoSorted);
+  const todos = useTodos();
   const layout = useWindowDimensions();
   const dispatch = useDispatch();
   const navigation = useNavigation<NavigationType<"Edit">>();
