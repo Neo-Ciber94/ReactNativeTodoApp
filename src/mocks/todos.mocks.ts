@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import { Todo } from "../model/Todo";
 
-export const todosMocks: Todo[] = [
+const todosMocks: Todo[] = [
   createTodo("Walk the dog"),
   createTodo("Buy milk"),
   createTodo("Buy eggs"),
@@ -21,3 +21,5 @@ function createTodo(title: string): Todo {
     createdAt: new Date(),
   };
 }
+
+export default todosMocks;

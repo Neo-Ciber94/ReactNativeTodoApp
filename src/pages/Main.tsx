@@ -1,11 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import { useDispatch } from "react-redux";
 import AddTodoButton from "../components/AddTodoButton";
 import TodoList from "../components/TodoList";
-import { todosMocks } from "../mocks/todos.mocks";
+import todosMocks from "../mocks/todos.mocks";
 import { Todo } from "../model/Todo";
 import { initTodos, TodoState } from "../redux/todos.slice";
 import { todoStore } from "../redux/todos.store";
@@ -37,7 +36,7 @@ function useTodosStorage() {
 
       if (data) {
         dispatch(initTodos({ todos: data.todos }));
-      } else {
+      } else if (__DEV__) {
         dispatch(initTodos({ todos: todosMocks }));
       }
     };
