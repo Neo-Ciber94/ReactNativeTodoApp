@@ -13,17 +13,23 @@ import routes from "../../routes";
 import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 import TodoItem from "../TodoItem";
 import { NavigationType } from "../../types";
-import { Headline } from "react-native-paper";
+import { Headline, Searchbar } from "react-native-paper";
 
 export default function TodoList() {
   const todos = useSelector(selectTodos);
   const layout = useWindowDimensions();
   const dispatch = useDispatch();
   const navigation = useNavigation<NavigationType<"Edit">>();
-  const isLargeScreen = layout.width > 1200;
-
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [searchText, setSearchText] = useState("");
+  let padding = styles.px;
+
+  if (layout.width > 1000) {
+    padding = styles.pxLarge;
+  } else if (layout.width > 600) {
+    padding = styles.pxMedium;
+  }
 
   const handleEdit = (t: Todo) => {
     navigation.navigate(routes.edit, {
@@ -51,7 +57,15 @@ export default function TodoList() {
 
   return (
     <>
-      <ScrollView style={styles.list}>
+      <View style={[styles.search, padding]}>
+        <Searchbar
+          placeholder="Search"
+          onChangeText={setSearchText}
+          value={searchText}
+        />
+      </View>
+
+      <ScrollView style={[styles.list, padding]}>
         <Headline>My todos</Headline>
         {todos.map((todo) => (
           <View key={todo.id} style={styles.item}>
@@ -75,11 +89,22 @@ export default function TodoList() {
 }
 
 const styles = StyleSheet.create({
+  px: {
+    paddingHorizontal: 10,
+  },
+  pxMedium: {
+    paddingHorizontal: 60,
+  },
+  pxLarge: {
+    paddingHorizontal: 250,
+  },
+  search: {
+    marginBottom: 20,
+    marginTop: 10,
+  },
   list: {
-    paddingHorizontal: 20,
     paddingTop: 5,
     paddingBottom: 80,
-    width: "100%",
   },
   item: {
     marginVertical: 7,

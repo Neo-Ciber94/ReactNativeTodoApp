@@ -22,7 +22,7 @@ export default function Main({ navigation }: Props) {
   return (
     <View style={{ height: "100%" }}>
       <TodoList />
-      <AddTodoButton onPress={() => navigation.navigate(routes.add)} />
+      <AddTodoButton onPress={() => navigation.navigate(routes.add, {})} />
     </View>
   );
 }

@@ -46,7 +46,7 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
       dispatch(createTodo(data));
     }
 
-    navigation.navigate(routes.list);
+    navigation.navigate(routes.list, {});
   };
 
   return (
@@ -73,6 +73,7 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
             placeholder="Title of this todo..."
             onBlur={onBlur}
             onChangeText={onChange}
+            multiline
             value={value}
           />
         )}
