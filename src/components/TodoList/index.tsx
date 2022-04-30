@@ -36,20 +36,32 @@ export default function TodoList() {
   const deletedRef = useRef<Todo | undefined>(undefined);
   const [afterDeleteSnackbar, setAfterDeleteSnackbar] = useState(false);
   const [filter, setFilter] = useState<TodoFilter>(TodoFilter.ALL);
-  const isSearching = searchText.trim().length > 0;
+  const isFiltering = searchText.trim().length > 0 || filter !== TodoFilter.ALL;
   let padding = styles.px;
 
   useEffect(() => {
-    if (isSearching) {
+    let result: Todo[] = todos;
+
+    switch (filter) {
+      case TodoFilter.COMPLETED:
+        result = todos.filter((todo) => todo.completed);
+        break;
+      case TodoFilter.ACTIVE:
+        result = todos.filter((todo) => !todo.completed);
+        break;
+      case TodoFilter.ALL:
+        break;
+    }
+
+    if (searchText.trim().length > 0) {
       const s = searchText.trim().toLowerCase();
-      const filtered = todos.filter((todo) =>
+      result = result.filter((todo) =>
         todo.title.trim().toLowerCase().includes(s)
       );
-      setFilteredTodos(filtered);
-    } else {
-      setFilteredTodos(todos);
     }
-  }, [todos, searchText]);
+
+    setFilteredTodos(result);
+  }, [todos, filter, searchText]);
 
   if (layout.width > 1000) {
     padding = styles.pxLarge;
@@ -118,7 +130,7 @@ export default function TodoList() {
 
       <ScrollView style={[styles.list, padding]}>
         <Headline>My todos</Headline>
-        {isSearching && todos.length > 0 && filteredTodos.length === 0 && (
+        {isFiltering && todos.length > 0 && filteredTodos.length === 0 && (
           <Caption style={styles.centerText}>No todos found</Caption>
         )}
         {todos.length === 0 && (

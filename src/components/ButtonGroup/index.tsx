@@ -1,7 +1,7 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ToggleButton, Text, Chip } from "react-native-paper";
+import { Text, Chip } from "react-native-paper";
 import Icon from "../Icon";
 
 export interface ButtonGroupItem<T> {
@@ -30,16 +30,13 @@ export interface ButtonGroupProps<T> {
 
 export default function ButtonGroup<T>({
   items,
-  value: initialValue,
+  value,
   onChange,
 }: ButtonGroupProps<T>) {
   const { colors } = useTheme();
-  const [value, setValue] = useState<T>(initialValue);
-
   const isSelected = (item: ButtonGroupItem<T>) => item.value === value;
 
   function handleChange(newValue: T) {
-    setValue(newValue);
     onChange(newValue);
   }
 
