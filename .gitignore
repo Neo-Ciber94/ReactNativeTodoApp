@@ -11,6 +11,7 @@ npm-debug.*
 web-build/
 tsconfig.tsbuildinfo
 private
+build[s]
 
 # macOS
 .DS_Store
