@@ -74,5 +74,14 @@ function updateTodoInternal(
 
 export const todoReducer = todoSlice.reducer;
 export const selectTodos = (state: RootState) => state.todoState.todos;
+export const selectTodoSorted = (state: RootState) => {
+  const todos = Array.from(state.todoState.todos);
+  todos.sort((a, b) =>  {
+    const timeA = a.createdAt?.getTime() ?? 0;
+    const timeB = b.createdAt?.getTime() ?? 0;
+    return timeB - timeA;
+  });
+  return todos;
+};
 export const { createTodo, deleteTodo, updateTodo, toggleTodo, initTodos } =
   todoSlice.actions;

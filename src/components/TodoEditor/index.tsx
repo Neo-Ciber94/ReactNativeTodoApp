@@ -1,11 +1,12 @@
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import {
   Button,
   Chip,
   Headline,
   HelperText,
+  Switch,
   TextInput,
 } from "react-native-paper";
 import { useDispatch } from "react-redux";
@@ -28,6 +29,7 @@ export interface TodoEditorProps {
 export default function TodoEditor({ title, todo }: TodoEditorProps) {
   const { colors } = useTheme();
   const navigation = useNavigation<NavigationType<"List">>();
+  const [showDetails, setShowDetails] = React.useState(false);
   const form = useForm<TodoInput>({
     defaultValues: { title: todo?.title || "" },
   });
@@ -82,6 +84,27 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
       <HelperText type="error" visible={!!errors.title}>
         Title is required
       </HelperText>
+      {todo && (
+        <Text style={styles.centerText}>
+          <Switch value={showDetails} onValueChange={setShowDetails}></Switch>
+          Show details
+        </Text>
+      )}
+      {todo && showDetails && (
+        <>
+          <TextInput label={"Version"} value={String(todo.version)} disabled />
+          <TextInput
+            label={"Created At"}
+            value={todo.createdAt?.toLocaleString() || "N/A"}
+            disabled
+          />
+          <TextInput
+            label={"Updated At"}
+            value={todo.updatedAt?.toLocaleString() || "N/A"}
+            disabled
+          />
+        </>
+      )}
       <View style={styles.actions}>
         <Button
           icon="content-save"
@@ -112,5 +135,16 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
+  },
+  centerText: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
+    alignContent: "center",
+  },
+  details: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
   },
 });

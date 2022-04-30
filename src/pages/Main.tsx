@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import AddTodoButton from "../components/AddTodoButton";
 import TodoList from "../components/TodoList";
 import { todosMocks } from "../mocks/todos.mocks";
+import { Todo } from "../model/Todo";
 import { initTodos, TodoState } from "../redux/todos.slice";
 import { todoStore } from "../redux/todos.store";
 import routes from "../routes";
@@ -32,7 +33,7 @@ function useTodosStorage() {
 
   useEffect(() => {
     const initialize = async () => {
-      const data = await store.load();
+      const data = await store.load(todoStateReviver);
 
       if (data) {
         dispatch(initTodos({ todos: data.todos }));
@@ -52,4 +53,24 @@ function useTodosStorage() {
 
     return () => unsuscribe();
   }, []);
+}
+
+function todoStateReviver(key: keyof TodoState, value: unknown): unknown {
+  if (key == "todos" && Array.isArray(value)) {
+    const todos: Partial<Todo>[] = value || [];
+
+    for (const todo of todos) {
+      if (todo) {
+        if (todo.createdAt) {
+          todo.createdAt = new Date(todo.createdAt);
+        }
+
+        if (todo.updatedAt) {
+          todo.updatedAt = new Date(todo.updatedAt);
+        }
+      }
+    }
+  }
+
+  return value;
 }

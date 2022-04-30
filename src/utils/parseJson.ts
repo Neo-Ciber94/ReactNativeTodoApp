@@ -1,6 +1,5 @@
-type ValueOfKey<T> = T[keyof T];
 
-export type Reviver<T> = (key: keyof T, value: any) => ValueOfKey<keyof T>;
+export type Reviver<T> = (key: keyof T, value: unknown) => unknown;
 
 /// Parses a JSON string and returns a JavaScript object.
 export function parseJson<T>(

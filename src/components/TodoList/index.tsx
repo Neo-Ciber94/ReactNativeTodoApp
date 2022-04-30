@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,22 +8,36 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Todo } from "../../model/Todo";
-import { deleteTodo, selectTodos, toggleTodo } from "../../redux/todos.slice";
+import { deleteTodo, selectTodos, selectTodoSorted, toggleTodo } from "../../redux/todos.slice";
 import routes from "../../routes";
 import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
 import TodoItem from "../TodoItem";
 import { NavigationType } from "../../types";
-import { Headline, Searchbar } from "react-native-paper";
+import { Caption, Headline, Searchbar } from "react-native-paper";
 
 export default function TodoList() {
-  const todos = useSelector(selectTodos);
+  const todos = useSelector(selectTodoSorted);
   const layout = useWindowDimensions();
   const dispatch = useDispatch();
   const navigation = useNavigation<NavigationType<"Edit">>();
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [searchText, setSearchText] = useState("");
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>(todos);
+  const isSearching = searchText.trim().length > 0;
   let padding = styles.px;
+
+  useEffect(() => {
+    if (isSearching) {
+      const s = searchText.trim().toLowerCase();
+      const filtered = todos.filter((todo) =>
+        todo.title.trim().toLowerCase().includes(s)
+      );
+      setFilteredTodos(filtered);
+    } else {
+      setFilteredTodos(todos);
+    }
+  }, [todos, searchText]);
 
   if (layout.width > 1000) {
     padding = styles.pxLarge;
@@ -33,7 +47,7 @@ export default function TodoList() {
 
   const handleEdit = (t: Todo) => {
     navigation.navigate(routes.edit, {
-      todo: t,
+      todoId: t.id,
     });
   };
 
@@ -67,7 +81,13 @@ export default function TodoList() {
 
       <ScrollView style={[styles.list, padding]}>
         <Headline>My todos</Headline>
-        {todos.map((todo) => (
+        {isSearching && todos.length > 0 && filteredTodos.length === 0 && (
+          <Caption style={styles.centerText}>No todos found</Caption>
+        )}
+        {todos.length === 0 && (
+          <Caption style={styles.centerText}>No todos available</Caption>
+        )}
+        {filteredTodos.map((todo) => (
           <View key={todo.id} style={styles.item}>
             <TodoItem
               todo={todo}
@@ -108,5 +128,11 @@ const styles = StyleSheet.create({
   },
   item: {
     marginVertical: 7,
+  },
+  centerText: {
+    fontSize: 20,
+    padding: 40,
+    textAlign: "center",
+    margin: "0 auto",
   },
 });
