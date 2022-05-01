@@ -4,7 +4,6 @@ import { Theme } from "react-native-paper/lib/typescript/types";
 import { getAppTheme } from "../themes/appTheme";
 import { LocalStore } from "../utils/persistence/LocalPersistence";
 
-const DARK_THEME_KEY = "todos/isDark";
 const store = new LocalStore<boolean>("todos/isDark");
 
 export interface DarkThemeContextProps {
@@ -39,7 +38,7 @@ export const DarkThemeProvider: React.FC = ({ children }) => {
   const setDarkTheme = (dark: boolean) => {
     setDark(dark);
     setTheme(getAppTheme(dark));
-    localStorage.setItem(DARK_THEME_KEY, dark.toString());
+    store.save(dark);
   };
 
   return (

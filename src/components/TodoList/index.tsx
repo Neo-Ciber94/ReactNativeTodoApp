@@ -189,6 +189,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 40,
     textAlign: "center",
-    margin: "0 auto",
+    marginHorizontal: "auto",
   },
 });

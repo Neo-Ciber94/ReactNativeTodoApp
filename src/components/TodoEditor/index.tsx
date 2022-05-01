@@ -60,14 +60,16 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
         {todo && (
           <Chip
             textStyle={{ color: "black" }}
-            style={{ backgroundColor: colors.accent }}
+            style={[{ backgroundColor: colors.accent }, styles.centerText]}
+            avatar={
+              <Avatar.Icon
+                icon="check-bold"
+                style={styles.completedIcon}
+                color="black"
+                size={25}
+              />
+            }
           >
-            <Avatar.Icon
-              icon="check-bold"
-              style={styles.completedIcon}
-              color="black"
-              size={25}
-            />
             Completed
           </Chip>
         )}
@@ -104,10 +106,10 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
         Title is required
       </HelperText>
       {todo && (
-        <Text style={[styles.centerText, styles.marginY]}>
-          <Switch value={showDetails} onValueChange={setShowDetails} style={{marginEnd: 10}}></Switch>
-          Show details
-        </Text>
+        <View style={[styles.centerText, styles.marginY]}>
+          <Switch value={showDetails} onValueChange={setShowDetails}></Switch>
+          <Text> Show details</Text>
+        </View>
       )}
       {todo && showDetails && (
         <>
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
   centerText: {
     display: "flex",
     flexDirection: "row",
-    alignContent: "center",
+    alignItems: "center",
   },
   details: {
     display: "flex",

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Portal, Dialog, Button, Paragraph } from "react-native-paper";
 import { Todo } from "../../model/Todo";
 
@@ -29,7 +29,7 @@ export default function ConfirmDeleteDialog({
         <Dialog.Title>Do you want to delete this Todo?</Dialog.Title>
         <Dialog.Content>
           <Paragraph>
-            Delete "<strong>{todo?.title}"?</strong>
+            Delete "<Text>{todo?.title}"?</Text>
           </Paragraph>
         </Dialog.Content>
         <Dialog.Actions>
