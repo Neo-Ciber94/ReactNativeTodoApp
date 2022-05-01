@@ -1,4 +1,4 @@
-name: Github Pages Deploy
+name: Deploy
 
 on:
   push:
@@ -7,19 +7,49 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  deploy:
 
     runs-on: ubuntu-latest
 
-    # Install the dependencies
+    # Setup
     steps:
     - uses: actions/checkout@v3
-    - name: NodeJS CI
+    - name: NodeJS
       uses: actions/setup-node@v3
       with:
         node-version: 16.15.0
         cache: 'npm'
-    - run: npm ci
-    - run: npm test
+    
+    # Install dependencies
+    - name: Install dependencies
+      run: npm ci
+    
+    # Run tests
+    - name: Run test
+      run: npm test
+      
+    # Build web app
+    - name: Install Expo
+      run: | 
+        npm i -g expo-cli
+        npm install -g sharp-cli
+      
+    # Build web app
+    - name: Build Expo app
+      run: expo build:web
+      
+    # Deploy
+    - name: Deploy
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v2.6.0
+      with:
+        target_branch: gh-pages
+        build_dir: web-build
+        commit_message: Deploy to Github Pages
+        verbose: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
     
 
