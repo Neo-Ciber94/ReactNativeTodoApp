@@ -3,7 +3,13 @@ import { Todo } from "../model/Todo";
 import { nanoid } from "../utils/nanoid";
 import { RootState } from "./todos.store";
 
+/**
+ * State of the app.
+ */
 export interface TodoState {
+  /**
+   * The currently available todos.
+   */
   todos: Todo[];
 }
 
@@ -56,8 +62,13 @@ const todoSlice = createSlice({
   },
 });
 
+// The todos reducer used by the store.
 export const todoReducer = todoSlice.reducer;
+
+// Select all the todos
 export const selectTodos = (state: RootState) => state.todoState.todos;
+
+// Select all the todos sorted
 export const selectTodoSorted = (state: RootState) => {
   const todos = Array.from(state.todoState.todos);
   todos.sort((a, b) => {
@@ -67,6 +78,8 @@ export const selectTodoSorted = (state: RootState) => {
   });
   return todos;
 };
+
+// The actions used by the app.
 export const {
   createTodo,
   deleteTodo,
