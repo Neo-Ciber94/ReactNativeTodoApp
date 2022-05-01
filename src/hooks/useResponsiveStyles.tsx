@@ -8,16 +8,36 @@ import {
   Platform,
 } from "react-native";
 
+/**
+ * Default style types.
+ */
 export type DefaultStyles = ViewStyle | TextStyle | ImageStyle;
+
+/**
+ * Additional details of the device.
+ */
 export interface DeviceDetails {
+  /**
+   * The current operating system.
+   */
   os: PlatformOSType;
+
+  /**
+   * The orientation of the device.
+   */
   orientation: "portrait" | "landscape";
 }
 
+/**
+ * Base definition of the styles.
+ */
 export type NamedStyles<T> = {
   [P in keyof T]: DefaultStyles;
 };
 
+/**
+ * Represents a factory for creating styles.
+ */
 export type NamedStylesFactory<T> = {
   [P in keyof T]:
     | ((size: ScaledSize, device: DeviceDetails) => DefaultStyles)
