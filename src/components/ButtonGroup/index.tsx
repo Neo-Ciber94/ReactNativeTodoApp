@@ -47,6 +47,7 @@ export default function ButtonGroup<T>({
           style={[
             { backgroundColor: colors.primary },
             { opacity: isSelected(item) ? 1 : 0.5 },
+            styles.item
           ]}
           key={item.label}
           avatar={<Icon icon={item.icon} size={30} color={"white"} />}
@@ -63,6 +64,8 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "row",
-    gap: 5,
   },
+  item: {
+    margin: 2.5
+  }
 });

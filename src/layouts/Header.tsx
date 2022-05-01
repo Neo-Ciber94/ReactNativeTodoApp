@@ -16,7 +16,7 @@ export default function Header({ navigation, back }: NativeStackHeaderProps) {
       {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content title="Todos App" />
       <View style={styles.themeToggle}>
-        <Switch value={dark} onValueChange={handleToggleDarkTheme} />
+        <Switch value={dark} onValueChange={handleToggleDarkTheme} style={styles.themeToggle}/>
         {dark ? (
           <Avatar.Icon style={styles.icon} color="#00ffbb" size={35} icon="weather-night" />
         ) : (
@@ -32,9 +32,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
   },
   icon: {
     backgroundColor: '#0000'
+  },
+  switch: {
+    marginEnd: 10
   }
 });

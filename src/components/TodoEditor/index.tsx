@@ -65,7 +65,7 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
             <Avatar.Icon
               icon="check-bold"
               style={styles.completedIcon}
-              color='black'
+              color="black"
               size={25}
             />
             Completed
@@ -73,7 +73,14 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
         )}
       </View>
 
-      {todo && <TextInput label={"Id"} value={todo.id} disabled />}
+      {todo && (
+        <TextInput
+          style={styles.marginY}
+          label={"Id"}
+          value={todo.id}
+          disabled
+        />
+      )}
       <Controller
         control={control}
         rules={{
@@ -87,6 +94,7 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
             onBlur={onBlur}
             onChangeText={onChange}
             multiline
+            style={styles.marginY}
             value={value}
           />
         )}
@@ -96,27 +104,34 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
         Title is required
       </HelperText>
       {todo && (
-        <Text style={styles.centerText}>
-          <Switch value={showDetails} onValueChange={setShowDetails}></Switch>
+        <Text style={[styles.centerText, styles.marginY]}>
+          <Switch value={showDetails} onValueChange={setShowDetails} style={{marginEnd: 10}}></Switch>
           Show details
         </Text>
       )}
       {todo && showDetails && (
         <>
-          <TextInput label={"Version"} value={String(todo.version)} disabled />
+          <TextInput
+            label={"Version"}
+            style={styles.marginY}
+            value={String(todo.version)}
+            disabled
+          />
           <TextInput
             label={"Created At"}
+            style={styles.marginY}
             value={todo.createdAt?.toLocaleString() || "N/A"}
             disabled
           />
           <TextInput
             label={"Updated At"}
+            style={styles.marginY}
             value={todo.updatedAt?.toLocaleString() || "N/A"}
             disabled
           />
         </>
       )}
-      <View style={styles.actions}>
+      <View style={[styles.actions, styles.marginY]}>
         <Button
           icon="content-save"
           mode="contained"
@@ -133,7 +148,6 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    gap: 10,
     paddingHorizontal: 10,
     paddingVertical: 30,
   },
@@ -150,15 +164,16 @@ const styles = StyleSheet.create({
   centerText: {
     display: "flex",
     flexDirection: "row",
-    gap: 10,
     alignContent: "center",
   },
   details: {
     display: "flex",
     flexDirection: "column",
-    gap: 10,
   },
   completedIcon: {
     backgroundColor: "#0000",
+  },
+  marginY: {
+    marginVertical: 5,
   },
 });
