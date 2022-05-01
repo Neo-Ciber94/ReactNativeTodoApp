@@ -13,7 +13,7 @@ import ListTodos from "./ListTodos";
 const Stack = createNativeStackNavigator();
 
 export default function Main() {
-  // react-native-paper and react-navigation theme types as semi-compatibles
+  // FIXME: react-native-paper and react-navigation theme types as semi-compatibles
   const { theme } = useDarkTheme();
 
   return (

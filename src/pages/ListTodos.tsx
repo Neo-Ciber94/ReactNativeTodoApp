@@ -16,7 +16,6 @@ const store = new LocalStore<TodoState>("todos/data");
 
 export default function ListTodos() {
   const navigation = useNavigation<NavigationType>();
-  // Initialize the todo store
   useTodosStorage();
 
   return (
@@ -30,6 +29,7 @@ export default function ListTodos() {
 function useTodosStorage() {
   const dispatch = useDispatch();
 
+  // Loads the todos from the storage asynchronously
   useEffect(() => {
     const initialize = async () => {
       const data = await store.load(todoStateReviver);
@@ -37,6 +37,7 @@ function useTodosStorage() {
       if (data) {
         dispatch(initTodos({ todos: data.todos }));
       } else if (__DEV__) {
+        // Only DEV, load mock data
         dispatch(initTodos({ todos: todosMocks }));
       }
     };
@@ -44,6 +45,8 @@ function useTodosStorage() {
     initialize();
   }, []);
 
+  // We subscribe to the store to save the todos to the storage after each change.
+  // This is OK because we only had 1 store in the app
   useEffect(() => {
     const unsuscribe = todoStore.subscribe(async () => {
       const appState = todoStore.getState();
@@ -54,6 +57,7 @@ function useTodosStorage() {
   }, []);
 }
 
+// Reviver used to parse correctly the todos including the `Date` type, otherwise will be just a string
 function todoStateReviver(key: keyof TodoState, value: unknown): unknown {
   if (key == "todos" && Array.isArray(value)) {
     const todos: Partial<Todo>[] = value || [];
