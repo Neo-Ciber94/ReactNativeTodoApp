@@ -1,3 +1,6 @@
+/**
+ * The routes of the app.
+ */
 const routes = {
   list: "Todos - List",
   add: "Todos - Add",
