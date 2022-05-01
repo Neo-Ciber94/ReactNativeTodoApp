@@ -27,8 +27,7 @@ jobs:
     
     # Build with Expo
     - name: Expo Deploy
-    - run: npm i expo-cli
-    - run: expo deploy:web
+    - run: npm i expo-cli && expo deploy:web
     
     # Deploy to Github Pages
     - name: GitHub Pages
