@@ -17,7 +17,7 @@ describe("parseJson tests", () => {
       '{ "id": 1, "name": "Keyboard", "createdAt": "2020-01-01" }',
       (key, value) => {
         if (key === "createdAt") {
-          return new Date(value);
+          return new Date(value as any);
         }
         return value;
       }
