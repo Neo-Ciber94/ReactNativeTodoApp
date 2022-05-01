@@ -1,0 +1,43 @@
+name: Github Pages Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    # Install the dependencies
+    steps:
+    - uses: actions/checkout@v3
+    - name: NodeJS CI
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.15.0
+        cache: 'npm'
+    - run: npm ci
+    
+    # Run tests
+    - name: Run test
+    - run: npm test
+    
+    # Build with Expo
+    - name: Expo Deploy
+    - run: npm i expo-cli
+    - run: expo deploy:web
+    
+    # Deploy to Github Pages
+    - name: GitHub Pages
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v2.6.0
+      with:
+        target_branch: gh-pages
+        build_dir: web-build
+        commit_message: Deploy TodoApp to Github Pages
+        verbose: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
