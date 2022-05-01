@@ -7,14 +7,14 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  deploy:
 
     runs-on: ubuntu-latest
 
     # Setup
     steps:
     - uses: actions/checkout@v3
-    - name: NodeJS CI
+    - name: NodeJS
       uses: actions/setup-node@v3
       with:
         node-version: 16.15.0
@@ -30,14 +30,14 @@ jobs:
       
     # Build web app
     - name: Install Expo
-      run: npm i expo-cli
+      run: npm i -g expo-cli
       
     # Build web app
     - name: Build Expo app
       run: expo build:web
       
     # Deploy
-    - name: GitHub Pages
+    - name: Deploy
       uses: crazy-max/ghaction-github-pages@v2.6.0
       with:
         target_branch: gh-pages
