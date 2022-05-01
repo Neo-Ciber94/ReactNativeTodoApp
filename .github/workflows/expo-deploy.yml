@@ -22,10 +22,10 @@ jobs:
     
     # Install dependencies
     - name: Install dependencies
-    - run: npm ci
+      run: npm ci
     
     # Run tests
     - name: Run test
-    - run: npm test
+      run: npm test
     
 
