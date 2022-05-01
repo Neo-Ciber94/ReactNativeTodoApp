@@ -40,6 +40,10 @@ export default function TodoList() {
   let padding = styles.px;
 
   useEffect(() => {
+    setAfterDeleteSnackbar(true)
+  }, [])
+
+  useEffect(() => {
     let result: Todo[] = todos;
 
     switch (filter) {
@@ -154,7 +158,7 @@ export default function TodoList() {
         onConfirm={confirmDelete}
       />
       <AfterDeleteSnackBar
-        durationMs={2000}
+        durationMs={50000}
         visible={afterDeleteSnackbar}
         setVisible={setAfterDeleteSnackbar}
         deletedTodoRef={deletedRef}

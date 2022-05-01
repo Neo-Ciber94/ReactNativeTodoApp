@@ -22,7 +22,6 @@ export default function AfterDeleteSnackBar({
   onDimiss,
 }: AfterDeleteSnackBarProps) {
   const dispatch = useDispatch();
-  const { colors } = useTheme();
 
   const handleDismiss = () => {
     setVisible?.(false);
@@ -67,7 +66,7 @@ export default function AfterDeleteSnackBar({
 
 const styles = StyleSheet.create({
   snackbar: {
-    width: "50%",
+    width: "80%",
     marginHorizontal: "auto",
     backgroundColor: "#383838",
   },

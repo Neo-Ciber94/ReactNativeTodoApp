@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { Text } from "react-native";
 import { Portal, Dialog, Button, Paragraph } from "react-native-paper";
+import { ResponsiveStyles } from "../../hooks/useResponsiveStyles";
 import { Todo } from "../../model/Todo";
 
 export interface ConfirmDeleteDialogProps {
@@ -18,6 +19,7 @@ export default function ConfirmDeleteDialog({
 }: ConfirmDeleteDialogProps) {
   const handleHideDialog = () => setVisible(false);
   const handleConfirm = () => onConfirm();
+  const styles = useSyles();
 
   return (
     <Portal>
@@ -29,7 +31,7 @@ export default function ConfirmDeleteDialog({
         <Dialog.Title>Do you want to delete this Todo?</Dialog.Title>
         <Dialog.Content>
           <Paragraph>
-            Delete "<Text>{todo?.title}"?</Text>
+            Delete "<Text style={{ fontWeight: "bold" }}>{todo?.title}"?</Text>
           </Paragraph>
         </Dialog.Content>
         <Dialog.Actions>
@@ -41,9 +43,8 @@ export default function ConfirmDeleteDialog({
   );
 }
 
-const styles = StyleSheet.create({
-  dialog: {
-    width: "80%",
-    marginHorizontal: "auto",
-  },
+const useSyles = ResponsiveStyles.create({
+  dialog: (size) => ({
+    marginHorizontal: size.width > 1000 ? "20%" : "5%",
+  }),
 });
