@@ -40,10 +40,6 @@ export default function TodoList() {
   let padding = styles.px;
 
   useEffect(() => {
-    setAfterDeleteSnackbar(true);
-  }, []);
-
-  useEffect(() => {
     let result: Todo[] = todos;
 
     switch (filter) {
