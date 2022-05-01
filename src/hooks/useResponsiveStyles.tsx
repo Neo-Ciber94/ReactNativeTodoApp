@@ -4,6 +4,8 @@ import {
   ImageStyle,
   ScaledSize,
   useWindowDimensions,
+  PlatformOSType,
+  Platform,
 } from "react-native";
 
 export type DefaultStyles = ViewStyle | TextStyle | ImageStyle;
@@ -13,7 +15,9 @@ export type NamedStyles<T> = {
 };
 
 export type NamedStylesFactory<T> = {
-  [P in keyof T]: ((size: ScaledSize) => DefaultStyles) | DefaultStyles;
+  [P in keyof T]:
+    | ((size: ScaledSize, os: PlatformOSType) => DefaultStyles)
+    | DefaultStyles;
 };
 
 /**
@@ -33,8 +37,8 @@ export class ResponsiveStyles {
    *  container: (size) => ({
    *    padding: size.width > 800 ? 30 : 5,
    *  }),
-   *  style: ({width}) => ({ 
-   *    color: width > 800 ? "red" : "blue" 
+   *  style: ({width}) => ({
+   *    color: width > 800 ? "red" : "blue"
    *  }),
    * });
    *
@@ -65,7 +69,7 @@ export function useReponsiveStyles<T extends NamedStyles<T> | NamedStyles<any>>(
   for (const k in factory) {
     const v = factory[k];
     if (typeof v === "function") {
-      result[k] = v(size);
+      result[k] = v(size, Platform.OS);
     } else {
       result[k] = v;
     }
