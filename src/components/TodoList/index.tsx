@@ -17,6 +17,8 @@ import { Caption, Headline, Searchbar } from "react-native-paper";
 import { useTodos } from "../../hooks/useTodos";
 import AfterDeleteSnackBar from "../AfterDeleteSnackbar";
 import ButtonGroup, { createButtonGroupItem } from "../ButtonGroup";
+import { useSnackbar } from "../../contexts/SnackbarContext";
+import { useNextId } from "../../hooks/useNextId";
 
 enum TodoFilter {
   ALL = "ALL",
@@ -38,6 +40,9 @@ export default function TodoList() {
   const [filter, setFilter] = useState<TodoFilter>(TodoFilter.ALL);
   const isFiltering = searchText.trim().length > 0 || filter !== TodoFilter.ALL;
   let padding = styles.px;
+
+  const showSnackbar = useSnackbar();
+  const nextId = useNextId();
 
   useEffect(() => {
     let result: Todo[] = todos;
@@ -80,8 +85,17 @@ export default function TodoList() {
   };
 
   const showDeleteDialog = (t: Todo) => {
-    setDialogVisible(true);
-    setSelectedTodo(t);
+    //setDialogVisible(true);
+    //setSelectedTodo(t);
+
+    showSnackbar.show({
+      message: `Attempting to delete todo: ${nextId()}`,
+      onDismissed: () => console.log("Dimissed"),
+      action: {
+        label: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+      },
+    });
   };
 
   const confirmDelete = () => {
