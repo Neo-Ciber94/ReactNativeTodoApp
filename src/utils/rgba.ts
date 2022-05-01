@@ -1,5 +1,6 @@
 import { clamp } from "./clamp";
 
+// This class is currently unused, for some reason fails with 'string cannot be converted to color' error
 export class Rgba {
   /**
    * The red component of the color.

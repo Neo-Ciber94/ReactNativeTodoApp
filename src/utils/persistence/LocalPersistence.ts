@@ -1,7 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { parseJson, Reviver } from "../parseJson";
-import { Store } from "./persistence";
+import { Store } from "./Store";
 
+/**
+ * A store using the `AsyncStorage` API.
+ */
 export class LocalStore<T> implements Store<T> {
   constructor(public readonly key: string) {}
 
