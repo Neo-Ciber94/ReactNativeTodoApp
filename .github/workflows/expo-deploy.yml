@@ -1,0 +1,25 @@
+name: Github Pages Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    # Install the dependencies
+    steps:
+    - uses: actions/checkout@v3
+    - name: NodeJS CI
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.15.0
+        cache: 'npm'
+    - run: npm ci
+    - run: npm test
+    
+
