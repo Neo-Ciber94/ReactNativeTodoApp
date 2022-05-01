@@ -2,6 +2,11 @@
   "name": "todos",
   "version": "0.1.0",
   "main": "node_modules/expo/AppEntry.js",
+  "homepage": "https://neo-ciber94.github.io/ReactNativeTodoApp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Neo-Ciber94/ReactNativeTodoApp"
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
