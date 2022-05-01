@@ -1,8 +1,7 @@
-import { useTheme } from "@react-navigation/native";
 import React, { MutableRefObject } from "react";
-import { StyleSheet } from "react-native";
 import { Snackbar, Text } from "react-native-paper";
 import { useDispatch } from "react-redux";
+import { ResponsiveStyles } from "../../hooks/useResponsiveStyles";
 import { Todo } from "../../model/Todo";
 import { setTodo } from "../../redux/todos.slice";
 
@@ -22,6 +21,7 @@ export default function AfterDeleteSnackBar({
   onDimiss,
 }: AfterDeleteSnackBarProps) {
   const dispatch = useDispatch();
+  const styles = useStyles();
 
   const handleDismiss = () => {
     setVisible?.(false);
@@ -64,10 +64,9 @@ export default function AfterDeleteSnackBar({
   );
 }
 
-const styles = StyleSheet.create({
-  snackbar: {
-    width: "80%",
-    marginHorizontal: "auto",
+const useStyles = ResponsiveStyles.create({
+  snackbar: ({ width }) => ({
+    marginHorizontal: width > 600 ? "20%" : "5%",
     backgroundColor: "#383838",
-  },
+  }),
 });
