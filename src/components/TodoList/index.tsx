@@ -1,4 +1,4 @@
-import { useNavigation, useTheme } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
 import {
   View,
@@ -40,8 +40,8 @@ export default function TodoList() {
   let padding = styles.px;
 
   useEffect(() => {
-    setAfterDeleteSnackbar(true)
-  }, [])
+    setAfterDeleteSnackbar(true);
+  }, []);
 
   useEffect(() => {
     let result: Todo[] = todos;
@@ -132,7 +132,7 @@ export default function TodoList() {
         />
       </View>
 
-      <ScrollView style={[styles.list, padding]}>
+      <ScrollView contentContainerStyle={[styles.list, padding]}>
         <Headline>My todos</Headline>
         {isFiltering && todos.length > 0 && filteredTodos.length === 0 && (
           <Caption style={styles.centerText}>No todos found</Caption>
