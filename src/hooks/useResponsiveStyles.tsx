@@ -9,6 +9,10 @@ import {
 } from "react-native";
 
 export type DefaultStyles = ViewStyle | TextStyle | ImageStyle;
+export interface DeviceDetails {
+  os: PlatformOSType;
+  orientation: "portrait" | "landscape";
+}
 
 export type NamedStyles<T> = {
   [P in keyof T]: DefaultStyles;
@@ -16,7 +20,7 @@ export type NamedStyles<T> = {
 
 export type NamedStylesFactory<T> = {
   [P in keyof T]:
-    | ((size: ScaledSize, os: PlatformOSType) => DefaultStyles)
+    | ((size: ScaledSize, device: DeviceDetails) => DefaultStyles)
     | DefaultStyles;
 };
 
@@ -65,11 +69,15 @@ export function useReponsiveStyles<T extends NamedStyles<T> | NamedStyles<any>>(
 ): T {
   const size = useWindowDimensions();
   const result: Record<keyof T, unknown> = {} as T;
+  const details: DeviceDetails = {
+    os: Platform.OS,
+    orientation: size.width > size.height ? "landscape" : "portrait",
+  };
 
   for (const k in factory) {
     const v = factory[k];
     if (typeof v === "function") {
-      result[k] = v(size, Platform.OS);
+      result[k] = v(size, details);
     } else {
       result[k] = v;
     }
