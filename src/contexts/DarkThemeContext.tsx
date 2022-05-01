@@ -28,7 +28,7 @@ export const DarkThemeProvider: React.FC = ({ children }) => {
     const initialize = async () => {
       const isDark = await store.load();
       if (isDark != null) {
-        setDark(isDark);
+        setDarkTheme(isDark);
       }
     };
 

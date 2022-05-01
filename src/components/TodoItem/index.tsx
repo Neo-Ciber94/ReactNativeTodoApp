@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Checkbox, IconButton, useTheme, withTheme } from "react-native-paper";
+import { Checkbox, IconButton, Surface, useTheme } from "react-native-paper";
+import { useIsDarkTheme } from "../../contexts/DarkThemeContext";
 import { Todo } from "../../model/Todo";
 
 export interface TodoItemProps {
@@ -16,12 +17,11 @@ const TodoItem: React.FC<TodoItemProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const { colors, dark } = useTheme();
+  const { colors } = useTheme();
+  const dark = useIsDarkTheme();
 
   return (
-    <View
-      style={[styles.card, { backgroundColor: dark ? "#1f1f1f" : "" }]}
-    >
+    <Surface style={[styles.card, { backgroundColor: dark ? "#1f1f1f" : "white" }]}>
       <View style={styles.todoLead}>
         <View style={{ marginRight: 10 }}>
           <Checkbox
@@ -54,7 +54,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
           onPress={() => onDelete(todo)}
         />
       </View>
-    </View>
+    </Surface>
   );
 };
 
@@ -65,15 +65,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderRadius: 10,
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    marginHorizontal: 2.5,
+    elevation: 4
   },
   todoLead: {
-    marginRight: "auto",
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
+    marginRight: "auto",
   },
   actions: {
     display: "flex",
