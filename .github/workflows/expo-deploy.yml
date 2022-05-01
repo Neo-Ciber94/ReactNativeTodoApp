@@ -1,4 +1,4 @@
-name: Github Pages Deploy
+name: Deploy
 
 on:
   push:
@@ -27,5 +27,26 @@ jobs:
     # Run tests
     - name: Run test
       run: npm test
+      
+    # Build web app
+    - name: Install Expo
+      run: npm i expo-cli
+      
+    # Build web app
+    - name: Build Expo app
+      run: expo build:web
+      
+    # Deploy
+    - name: GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v2.6.0
+      with:
+        target_branch: gh-pages
+        build_dir: web-build
+        commit_message: Deploy to Github Pages
+        verbose: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
     
 
