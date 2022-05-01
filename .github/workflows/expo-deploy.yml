@@ -30,7 +30,9 @@ jobs:
       
     # Build web app
     - name: Install Expo
-      run: npm i -g expo-cli
+      run: | 
+        npm i -g expo-cli
+        npm install -g sharp-cli
       
     # Build web app
     - name: Build Expo app
@@ -38,6 +40,7 @@ jobs:
       
     # Deploy
     - name: Deploy
+      if: success()
       uses: crazy-max/ghaction-github-pages@v2.6.0
       with:
         target_branch: gh-pages
