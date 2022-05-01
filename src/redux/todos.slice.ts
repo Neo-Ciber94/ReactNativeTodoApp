@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { nanoid } from "nanoid";
 import { Todo } from "../model/Todo";
+import { nanoid } from "../utils/nanoid";
 import { RootState } from "./todos.store";
 
 export interface TodoState {

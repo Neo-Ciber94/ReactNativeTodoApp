@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 import { todoStore } from "./src/redux/todos.store";
 import { DarkThemeProvider } from "./src/contexts/DarkThemeContext";
 import Main from "./src/pages/Main";
+import 'react-native-url-polyfill/auto';
+import 'react-native-get-random-values';
 
 export default function App() {
   return (

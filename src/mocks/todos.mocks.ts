@@ -1,5 +1,6 @@
-import { nanoid } from "nanoid";
+
 import { Todo } from "../model/Todo";
+import { nanoid } from "../utils/nanoid";
 
 const todosMocks: Todo[] = [
   createTodo("Walk the dog"),

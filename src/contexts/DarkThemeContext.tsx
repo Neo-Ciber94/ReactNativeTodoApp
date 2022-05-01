@@ -1,9 +1,11 @@
-import React, { createContext, useContext } from "react";
-import { ColorSchemeName, useColorScheme } from "react-native";
+import React, { createContext, useContext, useLayoutEffect } from "react";
+import { useColorScheme } from "react-native";
 import { Theme } from "react-native-paper/lib/typescript/types";
 import { getAppTheme } from "../themes/appTheme";
+import { LocalStore } from "../utils/persistence/LocalPersistence";
 
 const DARK_THEME_KEY = "todos/isDark";
+const store = new LocalStore<boolean>("todos/isDark");
 
 export interface DarkThemeContextProps {
   theme: Theme;
@@ -19,10 +21,20 @@ export const DarkThemeContext = createContext<DarkThemeContextProps>({
 
 export const DarkThemeProvider: React.FC = ({ children }) => {
   const colorScheme = useColorScheme();
-  const [dark, setDark] = React.useState(() =>
-    isUserPreferenceDarkMode(colorScheme)
-  );
+  const userPrefersDarkMode = colorScheme === "dark";
+  const [dark, setDark] = React.useState(userPrefersDarkMode);
   const [theme, setTheme] = React.useState<Theme>(getAppTheme(dark));
+
+  useLayoutEffect(() => {
+    const initialize = async () => {
+      const isDark = await store.load();
+      if (isDark != null) {
+        setDark(isDark);
+      }
+    };
+
+    initialize();
+  }, []);
 
   const setDarkTheme = (dark: boolean) => {
     setDark(dark);
@@ -36,19 +48,6 @@ export const DarkThemeProvider: React.FC = ({ children }) => {
     </DarkThemeContext.Provider>
   );
 };
-
-function isUserPreferenceDarkMode(colorSchemeName: ColorSchemeName): boolean {
-  const isDarkModeString = localStorage.getItem(DARK_THEME_KEY);
-
-  // The localStore has priority over the user preference
-  if (isDarkModeString) {
-    return isDarkModeString === "true";
-  } else {
-    const isDarkMode = colorSchemeName === "dark";
-    localStorage.setItem(DARK_THEME_KEY, isDarkMode.toString());
-    return isDarkMode;
-  }
-}
 
 export const useDarkTheme = () => useContext(DarkThemeContext);
 
