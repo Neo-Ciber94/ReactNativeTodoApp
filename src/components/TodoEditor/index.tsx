@@ -80,6 +80,7 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
           style={styles.marginY}
           label={"Id"}
           value={todo.id}
+          autoComplete="off"
           disabled
         />
       )}
@@ -97,12 +98,18 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
             onChangeText={onChange}
             multiline
             style={styles.marginY}
+            autoComplete="off"
             value={value}
           />
         )}
         name="title"
       />
-      <HelperText type="error" visible={!!errors.title}>
+      <HelperText
+        type="error"
+        visible={!!errors.title}
+        onPressIn={undefined}
+        onPressOut={undefined}
+      >
         Title is required
       </HelperText>
       {todo && (
@@ -117,18 +124,21 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
             label={"Version"}
             style={styles.marginY}
             value={String(todo.version)}
+            autoComplete="off"
             disabled
           />
           <TextInput
             label={"Created At"}
             style={styles.marginY}
             value={todo.createdAt?.toLocaleString() || "N/A"}
+            autoComplete="off"
             disabled
           />
           <TextInput
             label={"Updated At"}
             style={styles.marginY}
             value={todo.updatedAt?.toLocaleString() || "N/A"}
+            autoComplete="off"
             disabled
           />
         </>
