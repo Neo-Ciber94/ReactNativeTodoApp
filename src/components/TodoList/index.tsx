@@ -153,14 +153,14 @@ export default function TodoList() {
         )}
         {filteredTodos.map((todo, i) => (
           <View key={todo.id} style={styles.item}>
-            <Transitions.Collapse in={true} duration={1000}>
+            <Transitions.SlideFade in={true} delay={i * 100}>
               <TodoItem
                 todo={todo}
                 onToggle={handleTodoToggle}
                 onDelete={showDeleteDialog}
                 onEdit={handleEdit}
               />
-            </Transitions.Collapse>
+            </Transitions.SlideFade>
           </View>
         ))}
       </ScrollView>
