@@ -154,7 +154,7 @@ export default function TodoList() {
         onConfirm={confirmDelete}
       />
       <AfterDeleteSnackBar
-        durationMs={50000}
+        durationMs={5000}
         visible={afterDeleteSnackbar}
         setVisible={setAfterDeleteSnackbar}
         deletedTodoRef={deletedRef}
