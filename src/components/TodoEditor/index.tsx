@@ -96,10 +96,11 @@ export default function TodoEditor({ title, todo }: TodoEditorProps) {
             placeholder="Title of this todo..."
             onBlur={onBlur}
             onChangeText={onChange}
-            multiline
             style={styles.marginY}
             autoComplete="off"
             value={value}
+            multiline
+            autoFocus
           />
         )}
         name="title"
