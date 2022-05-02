@@ -18,7 +18,7 @@ import { useTodos } from "../../hooks/useTodos";
 import AfterDeleteSnackBar from "../AfterDeleteSnackbar";
 import ButtonGroup, { createButtonGroupItem } from "../ButtonGroup";
 import { useSnackbar } from "../../contexts/SnackbarContext";
-import { useNextId } from "../../hooks/useNextId";
+import { useCounter } from "../../hooks/useCounter";
 import * as Transitions from "../Transitions";
 
 enum TodoFilter {
@@ -43,7 +43,7 @@ export default function TodoList() {
   let padding = styles.px;
 
   const showSnackbar = useSnackbar();
-  const nextId = useNextId();
+  const nextId = useCounter();
 
   useEffect(() => {
     let result: Todo[] = todos;
@@ -171,7 +171,7 @@ export default function TodoList() {
         onConfirm={confirmDelete}
       />
       <AfterDeleteSnackBar
-        durationMs={50000}
+        durationMs={5000}
         visible={afterDeleteSnackbar}
         setVisible={setAfterDeleteSnackbar}
         deletedTodoRef={deletedRef}

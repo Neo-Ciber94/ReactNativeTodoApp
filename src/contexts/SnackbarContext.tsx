@@ -1,26 +1,17 @@
 import React, {
   createContext,
   useContext,
-  FC,
   useEffect,
   useState,
+  useRef,
+  MutableRefObject,
 } from "react";
-import {
-  TouchableOpacity,
-  StyleProp,
-  StyleSheet,
-  View,
-  Text,
-  ViewStyle,
-} from "react-native";
+import { StyleProp, View, Text, ViewStyle } from "react-native";
+import * as Transitions from "../components/Transitions";
+import { delay } from "../utils/delay";
+import { styles, Snackbar, SnackBarActionProps } from "./Snackbar";
 
-export type SnackbarAction<T> = () => T;
-
-export interface SnackBarActionProps {
-  label: string;
-  style?: StyleProp<ViewStyle>;
-  onPress: () => void;
-}
+type ShowSnackbarFn = (options: ShowSnackbarOptions) => void;
 
 export interface ShowSnackbarOptions {
   message: string;
@@ -35,16 +26,42 @@ export interface SnackbarContextProps {
   show: (options: ShowSnackbarOptions) => void;
 }
 
-export const SnackbarContext = createContext<SnackbarContextProps>({
-  show: () => {},
-});
+// prettier-ignore
+export const SnackbarContext = createContext<SnackbarContextProps>({ show: () => {} });
 
 export const useSnackbar = () => useContext(SnackbarContext);
 
 export const SnackbarProvider: React.FC = ({ children }) => {
-  const snackBars = React.useRef<ShowSnackbarOptions[]>([]);
+  const showRef = useRef<ShowSnackbarFn>(() => {});
+
+  return (
+    <SnackbarContext.Provider
+      value={{
+        show: (options) => showRef.current(options),
+      }}
+    >
+      <View style={styles.container}>
+        <>
+          {children}
+          <SnackbarDispatchProvider showRef={showRef} />
+        </>
+      </View>
+    </SnackbarContext.Provider>
+  );
+};
+
+interface SnackbarDispatchProviderProps {
+  showRef: MutableRefObject<ShowSnackbarFn>;
+}
+
+function SnackbarDispatchProvider({ showRef }: SnackbarDispatchProviderProps) {
+  const queue = useRef<ShowSnackbarOptions[]>([]);
+  const isDimissedRef = useRef(false);
   const [active, setActive] = useState<ShowSnackbarOptions | null>(null);
   const [visible, setVisible] = useState(false);
+  const [entering, setEntering] = useState(!visible);
+
+  const DURATION = 300;
 
   const showNew = (options?: ShowSnackbarOptions) => {
     if (options) {
@@ -56,121 +73,60 @@ export const SnackbarProvider: React.FC = ({ children }) => {
     }
   };
 
-  const handleDismiss = () => {
+  const handleDismiss = async () => {
+    if (!visible || isDimissedRef.current) {
+      return;
+    }
+
+    console.log("Dimis")
+
+    await delay(active?.duration ?? 5000);
+
     setVisible(false);
     active?.onDismissed?.();
+    isDimissedRef.current = true;
 
-    if (snackBars.current.length > 0) {
-      const nextSnackbar = snackBars.current.shift();
+    if (queue.current.length > 0) {
+      const nextSnackbar = queue.current.shift();
 
       // We don't show the other immediately, but we wait for the animation to finish
       setTimeout(() => showNew(nextSnackbar), 300);
     }
   };
 
-  const show = (options: ShowSnackbarOptions) => {
-    if (visible) {
-      snackBars.current.push(options);
-    } else {
-      showNew(options);
-    }
-  };
-
-  return (
-    <SnackbarContext.Provider value={{ show }}>
-      <View style={styles.container}>
-        <>
-          {children}
-          <Snackbar
-            onDismiss={handleDismiss}
-            visible={visible}
-            action={active?.action}
-            style={active?.style}
-            duration={active?.duration}
-          >
-            <Text style={[{ color: "white" }, active?.textStyle]}>
-              {active?.message}
-            </Text>
-          </Snackbar>
-        </>
-      </View>
-    </SnackbarContext.Provider>
-  );
-};
-
-export interface SnackbarProps {
-  visible: boolean;
-  duration?: number;
-  action?: SnackBarActionProps;
-  onDismiss: () => void;
-  style?: StyleProp<ViewStyle>;
-}
-
-export const Snackbar: FC<SnackbarProps> = ({
-  visible,
-  duration = 5000,
-  action,
-  onDismiss,
-  style,
-  children,
-}) => {
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
-
-    if (visible) {
-      timeout = setTimeout(onDismiss, duration);
-    }
-
-    return () => timeout && clearTimeout(timeout);
-  }, [visible]);
-
-  const handleOnPress = () => {
-    if (action) {
-      action.onPress();
-    }
-
-    onDismiss();
-  };
+    console.log("Enter: ", entering);
+    showRef.current = (options: ShowSnackbarOptions) => {
+      if (visible) {
+        queue.current.push(options);
+      } else {
+        showNew(options);
+      }
+    };
+  }, [showRef, entering, visible, queue]);
 
   if (!visible) {
     return <></>;
   }
 
   return (
-    <View style={[styles.snackbar, style]}>
-      <View>
-        <>{children}</>
-      </View>
-      {action && (
-        <TouchableOpacity onPress={handleOnPress}>
-          <Text style={[styles.snackbarAction, action.style]}>
-            {action.label}
-          </Text>
-        </TouchableOpacity>
-      )}
-    </View>
+    <Transitions.Grow
+      in={entering}
+      onAnimationEnd={handleDismiss}
+      duration={DURATION}
+    >
+      <Snackbar
+        // onDismiss={handleDismiss}
+        onDismiss={() => setEntering(!entering)}
+        visible={visible}
+        action={active?.action}
+        style={active?.style}
+        duration={active?.duration}
+      >
+        <Text style={[{ color: "white" }, active?.textStyle]}>
+          {active?.message}
+        </Text>
+      </Snackbar>
+    </Transitions.Grow>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-  },
-  snackbar: {
-    position: "absolute",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 20,
-    width: "100%",
-    backgroundColor: "#383838",
-    bottom: 0,
-  },
-  snackbarAction: {
-    color: "#03dac6",
-    fontWeight: "500",
-    textTransform: "uppercase",
-  },
-});
+}
