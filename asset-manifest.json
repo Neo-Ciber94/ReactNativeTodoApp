@@ -1,0 +1,23 @@
+{
+  "files": {
+    "app.js": "/ReactNativeTodoApp/static/js/app.dbd5e613.chunk.js",
+    "app.js.map": "/ReactNativeTodoApp/static/js/app.dbd5e613.chunk.js.map",
+    "runtime~app.js": "/ReactNativeTodoApp/static/js/runtime~app.f5459f52.js",
+    "runtime~app.js.map": "/ReactNativeTodoApp/static/js/runtime~app.f5459f52.js.map",
+    "static/js/2.8387f2aa.chunk.js": "/ReactNativeTodoApp/static/js/2.8387f2aa.chunk.js",
+    "static/js/2.8387f2aa.chunk.js.map": "/ReactNativeTodoApp/static/js/2.8387f2aa.chunk.js.map",
+    "fonts/MaterialCommunityIcons.ttf": "/ReactNativeTodoApp/./fonts/MaterialCommunityIcons.ttf",
+    "favicon-16.png": "/ReactNativeTodoApp/favicon-16.png",
+    "favicon-32.png": "/ReactNativeTodoApp/favicon-32.png",
+    "favicon.ico": "/ReactNativeTodoApp/favicon.ico",
+    "index.html": "/ReactNativeTodoApp/index.html",
+    "manifest.json": "/ReactNativeTodoApp/manifest.json",
+    "serve.json": "/ReactNativeTodoApp/serve.json",
+    "static/js/2.8387f2aa.chunk.js.LICENSE.txt": "/ReactNativeTodoApp/static/js/2.8387f2aa.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.f5459f52.js",
+    "static/js/2.8387f2aa.chunk.js",
+    "static/js/app.dbd5e613.chunk.js"
+  ]
+}
