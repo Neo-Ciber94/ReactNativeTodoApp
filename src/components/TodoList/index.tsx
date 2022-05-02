@@ -1,5 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   View,
   StyleSheet,
@@ -43,7 +49,7 @@ export default function TodoList() {
   let padding = styles.px;
 
   const showSnackbar = useSnackbar();
-  const nextId = useCounter();
+  const count = useCounter();
 
   useEffect(() => {
     let result: Todo[] = todos;
@@ -86,17 +92,17 @@ export default function TodoList() {
   };
 
   const showDeleteDialog = (t: Todo) => {
-    //setDialogVisible(true);
-    //setSelectedTodo(t);
+    setDialogVisible(true);
+    setSelectedTodo(t);
 
-    showSnackbar.show({
-      message: `Attempting to delete todo: ${nextId()}`,
-      onDismissed: () => console.log("Dimissed"),
-      action: {
-        label: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-      },
-    });
+    // showSnackbar.show({
+    //   message: `Attempting to delete todo: ${count()}`,
+    //   onDismissed: () => console.log("Dimissed"),
+    //   action: {
+    //     label: "Cancel",
+    //     onPress: () => console.log("Cancel Pressed"),
+    //   },
+    // });
   };
 
   const confirmDelete = () => {
@@ -142,7 +148,6 @@ export default function TodoList() {
           value={searchText}
         />
       </View>
-
       <ScrollView contentContainerStyle={[styles.list, padding]}>
         <Headline>My todos</Headline>
         {isFiltering && todos.length > 0 && filteredTodos.length === 0 && (

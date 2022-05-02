@@ -1,6 +1,5 @@
 import { ComponentType, ReactNode, useEffect, useRef } from "react";
 import { Animated } from "react-native";
-import { useCounter } from "../hooks/useCounter";
 
 export interface AnimatedComponentProps {
   in: boolean;
@@ -44,7 +43,11 @@ export function createAnimatedComponent<
         useNativeDriver,
         delay,
         easing,
-      }).start(onAnimationEnd);
+      }).start((result) => {
+        if (result.finished) {
+          onAnimationEnd?.();
+        }
+      });
     }, [enter, animatedValue]);
 
     const factoryProps: AnimatedFactoryProps<P> = {
