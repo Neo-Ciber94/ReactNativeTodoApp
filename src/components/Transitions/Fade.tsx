@@ -5,5 +5,3 @@ export const Fade = createAnimatedComponent(({ animatedValue, children }) => {
   const opacity = animatedValue;
   return <Animated.View style={{ opacity }}>{children}</Animated.View>;
 });
-
-

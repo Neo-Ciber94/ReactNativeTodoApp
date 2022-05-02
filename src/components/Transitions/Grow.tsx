@@ -1,8 +1,5 @@
-import {
-  createAnimatedComponent,
-  mergeAnimatedComponents,
-} from "../../utils/createAnimatedComponent";
+import { mergeComponents } from "../../utils/mergeComponents";
 import { Fade } from "./Fade";
 import { Zoom } from "./Zoom";
 
-export const Grow = mergeAnimatedComponents(Fade, Zoom);
+export const Grow = mergeComponents(Fade, Zoom);
