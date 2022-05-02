@@ -19,6 +19,7 @@ import AfterDeleteSnackBar from "../AfterDeleteSnackbar";
 import ButtonGroup, { createButtonGroupItem } from "../ButtonGroup";
 import { useSnackbar } from "../../contexts/SnackbarContext";
 import { useNextId } from "../../hooks/useNextId";
+import { Fade, SlideLeft } from "../Animations/Fade";
 
 enum TodoFilter {
   ALL = "ALL",
@@ -150,14 +151,16 @@ export default function TodoList() {
         {todos.length === 0 && (
           <Caption style={styles.centerText}>No todos available</Caption>
         )}
-        {filteredTodos.map((todo) => (
+        {filteredTodos.map((todo, i) => (
           <View key={todo.id} style={styles.item}>
-            <TodoItem
-              todo={todo}
-              onToggle={handleTodoToggle}
-              onDelete={showDeleteDialog}
-              onEdit={handleEdit}
-            />
+            <Fade in={true} duration={1000}>
+              <TodoItem
+                todo={todo}
+                onToggle={handleTodoToggle}
+                onDelete={showDeleteDialog}
+                onEdit={handleEdit}
+              />
+            </Fade>
           </View>
         ))}
       </ScrollView>

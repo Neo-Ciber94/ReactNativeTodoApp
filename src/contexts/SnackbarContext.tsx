@@ -64,7 +64,7 @@ export const SnackbarProvider: React.FC = ({ children }) => {
       const nextSnackbar = snackBars.current.shift();
 
       // We don't show the other immediately, but we wait for the animation to finish
-      setTimeout(() => showNew(nextSnackbar), 1000);
+      setTimeout(() => showNew(nextSnackbar), 300);
     }
   };
 
@@ -169,7 +169,8 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   snackbarAction: {
-    color: "cyan",
+    color: "#03dac6",
+    fontWeight: "500",
     textTransform: "uppercase",
   },
 });

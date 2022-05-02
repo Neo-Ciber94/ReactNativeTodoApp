@@ -21,7 +21,9 @@ const TodoItem: React.FC<TodoItemProps> = ({
   const dark = useIsDarkTheme();
 
   return (
-    <Surface style={[styles.card, { backgroundColor: dark ? "#1f1f1f" : "white" }]}>
+    <Surface
+      style={[styles.card, { backgroundColor: dark ? "#1f1f1f" : "white" }]}
+    >
       <View style={styles.todoLead}>
         <View style={{ marginRight: 10 }}>
           <Checkbox
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 10,
     marginHorizontal: 2.5,
-    elevation: 4
+    elevation: 4,
   },
   todoLead: {
     display: "flex",
