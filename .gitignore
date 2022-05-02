@@ -12,6 +12,7 @@ web-build/
 tsconfig.tsbuildinfo
 private
 build[s]
+.vscode
 
 # macOS
 .DS_Store

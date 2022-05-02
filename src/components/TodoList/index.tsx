@@ -19,7 +19,7 @@ import AfterDeleteSnackBar from "../AfterDeleteSnackbar";
 import ButtonGroup, { createButtonGroupItem } from "../ButtonGroup";
 import { useSnackbar } from "../../contexts/SnackbarContext";
 import { useNextId } from "../../hooks/useNextId";
-import { Fade, SlideLeft } from "../Animations/Fade";
+import * as Transitions from "../Transitions";
 
 enum TodoFilter {
   ALL = "ALL",
@@ -153,14 +153,14 @@ export default function TodoList() {
         )}
         {filteredTodos.map((todo, i) => (
           <View key={todo.id} style={styles.item}>
-            <Fade in={true} duration={1000}>
+            <Transitions.Grow in={true} duration={1000}>
               <TodoItem
                 todo={todo}
                 onToggle={handleTodoToggle}
                 onDelete={showDeleteDialog}
                 onEdit={handleEdit}
               />
-            </Fade>
+            </Transitions.Grow>
           </View>
         ))}
       </ScrollView>
