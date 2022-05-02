@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode, useEffect, useRef } from "react";
 import { Animated } from "react-native";
-import { useNextId } from "../hooks/useNextId";
+import { useCounter } from "../hooks/useCounter";
 
 export interface AnimatedComponentProps {
   in: boolean;
@@ -45,7 +45,7 @@ export function createAnimatedComponent<
         delay,
         easing,
       }).start(onAnimationEnd);
-    }, [animatedValue]);
+    }, [enter, animatedValue]);
 
     const factoryProps: AnimatedFactoryProps<P> = {
       ...(otherProps as any), // SAFETY: passing the rest of the props of type `P`
